@@ -1,0 +1,955 @@
+{
+  "meta": {
+    "generator": "Flex Audit v2.0",
+    "framework": "ARTIFACT virtual Enterprise",
+    "timestamp": "2025-12-06T19:07:31.666603",
+    "repository": "C:\\workspace\\flex_audit",
+    "project_name": "flex_audit"
+  },
+  "summary": {
+    "score": 0,
+    "grade": "F",
+    "total_findings": 75,
+    "findings_by_severity": {
+      "critical": 13,
+      "high": 11,
+      "medium": 3,
+      "low": 32,
+      "info": 16
+    }
+  },
+  "statistics": {
+    "total_files": 20,
+    "total_lines": 4250,
+    "languages": {
+      "Other": 3,
+      "Python": 8,
+      "Markdown": 5,
+      "HTML": 2,
+      "JavaScript": 1,
+      "CSS": 1
+    },
+    "findings_by_severity": {
+      "critical": 13,
+      "high": 11,
+      "medium": 3,
+      "low": 32,
+      "info": 16
+    },
+    "score": 0
+  },
+  "findings": [
+    {
+      "file": "auditor.py",
+      "line": 62,
+      "type": "TODO_MARKER",
+      "severity": "INFO",
+      "category": "Code Quality",
+      "description": "Development marker found - review and address",
+      "matched": "TODO",
+      "suggestion": ""
+    },
+    {
+      "file": "auditor.py",
+      "line": 62,
+      "type": "TODO_MARKER",
+      "severity": "INFO",
+      "category": "Code Quality",
+      "description": "Development marker found - review and address",
+      "matched": "FIXME",
+      "suggestion": ""
+    },
+    {
+      "file": "auditor.py",
+      "line": 62,
+      "type": "TODO_MARKER",
+      "severity": "INFO",
+      "category": "Code Quality",
+      "description": "Development marker found - review and address",
+      "matched": "HACK",
+      "suggestion": ""
+    },
+    {
+      "file": "auditor.py",
+      "line": 62,
+      "type": "TODO_MARKER",
+      "severity": "INFO",
+      "category": "Code Quality",
+      "description": "Development marker found - review and address",
+      "matched": "XXX",
+      "suggestion": ""
+    },
+    {
+      "file": "auditor.py",
+      "line": 148,
+      "type": "BARE_EXCEPT",
+      "severity": "MEDIUM",
+      "category": "Code Quality",
+      "description": "Bare except catches all exceptions including KeyboardInterrupt",
+      "matched": "except:",
+      "suggestion": ""
+    },
+    {
+      "file": "auditor.py",
+      "line": 148,
+      "type": "BARE_EXCEPT_AST",
+      "severity": "MEDIUM",
+      "category": "Code Quality",
+      "description": "Bare except catches all exceptions including SystemExit",
+      "matched": "",
+      "suggestion": ""
+    },
+    {
+      "file": "docs\\CONTRIBUTING.md",
+      "line": 14,
+      "type": "TODO_MARKER",
+      "severity": "INFO",
+      "category": "Code Quality",
+      "description": "Development marker found - review and address",
+      "matched": "bug",
+      "suggestion": ""
+    },
+    {
+      "file": "docs\\script.js",
+      "line": 45,
+      "type": "EVAL_USAGE",
+      "severity": "CRITICAL",
+      "category": "Security",
+      "description": "Use of eval() can lead to arbitrary code execution",
+      "matched": "***REDACTED***",
+      "suggestion": ""
+    },
+    {
+      "file": "docs\\script.js",
+      "line": 140,
+      "type": "EVAL_USAGE",
+      "severity": "CRITICAL",
+      "category": "Security",
+      "description": "Use of eval() can lead to arbitrary code execution",
+      "matched": "***REDACTED***",
+      "suggestion": ""
+    },
+    {
+      "file": "docs\\script.js",
+      "line": 52,
+      "type": "XSS_INNERHTML",
+      "severity": "HIGH",
+      "category": "Security",
+      "description": "innerHTML assignment may lead to XSS",
+      "matched": "***REDACTED***",
+      "suggestion": ""
+    },
+    {
+      "file": "docs\\script.js",
+      "line": 55,
+      "type": "XSS_INNERHTML",
+      "severity": "HIGH",
+      "category": "Security",
+      "description": "innerHTML assignment may lead to XSS",
+      "matched": "***REDACTED***",
+      "suggestion": ""
+    },
+    {
+      "file": "docs\\script.js",
+      "line": 62,
+      "type": "XSS_INNERHTML",
+      "severity": "HIGH",
+      "category": "Security",
+      "description": "innerHTML assignment may lead to XSS",
+      "matched": "***REDACTED***",
+      "suggestion": ""
+    },
+    {
+      "file": "docs\\script.js",
+      "line": 90,
+      "type": "XSS_INNERHTML",
+      "severity": "HIGH",
+      "category": "Security",
+      "description": "innerHTML assignment may lead to XSS",
+      "matched": "***REDACTED***",
+      "suggestion": ""
+    },
+    {
+      "file": "docs\\script.js",
+      "line": 94,
+      "type": "XSS_INNERHTML",
+      "severity": "HIGH",
+      "category": "Security",
+      "description": "innerHTML assignment may lead to XSS",
+      "matched": "***REDACTED***",
+      "suggestion": ""
+    },
+    {
+      "file": "docs\\script.js",
+      "line": 148,
+      "type": "XSS_INNERHTML",
+      "severity": "HIGH",
+      "category": "Security",
+      "description": "innerHTML assignment may lead to XSS",
+      "matched": "***REDACTED***",
+      "suggestion": ""
+    },
+    {
+      "file": "docs\\script.js",
+      "line": 154,
+      "type": "XSS_INNERHTML",
+      "severity": "HIGH",
+      "category": "Security",
+      "description": "innerHTML assignment may lead to XSS",
+      "matched": "***REDACTED***",
+      "suggestion": ""
+    },
+    {
+      "file": "docs\\script.js",
+      "line": 164,
+      "type": "XSS_INNERHTML",
+      "severity": "HIGH",
+      "category": "Security",
+      "description": "innerHTML assignment may lead to XSS",
+      "matched": "***REDACTED***",
+      "suggestion": ""
+    },
+    {
+      "file": "docs\\script.js",
+      "line": 46,
+      "type": "TODO_MARKER",
+      "severity": "INFO",
+      "category": "Code Quality",
+      "description": "Development marker found - review and address",
+      "matched": "TODO",
+      "suggestion": ""
+    },
+    {
+      "file": "docs\\script.js",
+      "line": 141,
+      "type": "TODO_MARKER",
+      "severity": "INFO",
+      "category": "Code Quality",
+      "description": "Development marker found - review and address",
+      "matched": "TODO",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\constants.py",
+      "line": 90,
+      "type": "PRIVATE_KEY",
+      "severity": "CRITICAL",
+      "category": "Security",
+      "description": "Potential secret detected: PRIVATE_KEY",
+      "matched": "***REDACTED***",
+      "suggestion": "Remove secret and use environment variables or secret management"
+    },
+    {
+      "file": "src\\constants.py",
+      "line": 92,
+      "type": "PRIVATE_KEY",
+      "severity": "CRITICAL",
+      "category": "Security",
+      "description": "Potential secret detected: PRIVATE_KEY",
+      "matched": "***REDACTED***",
+      "suggestion": "Remove secret and use environment variables or secret management"
+    },
+    {
+      "file": "src\\constants.py",
+      "line": 90,
+      "type": "RSA_PRIVATE_KEY",
+      "severity": "CRITICAL",
+      "category": "Security",
+      "description": "Potential secret detected: RSA_PRIVATE_KEY",
+      "matched": "***REDACTED***",
+      "suggestion": "Remove secret and use environment variables or secret management"
+    },
+    {
+      "file": "src\\constants.py",
+      "line": 92,
+      "type": "EC_PRIVATE_KEY",
+      "severity": "CRITICAL",
+      "category": "Security",
+      "description": "Potential secret detected: EC_PRIVATE_KEY",
+      "matched": "***REDACTED***",
+      "suggestion": "Remove secret and use environment variables or secret management"
+    },
+    {
+      "file": "src\\constants.py",
+      "line": 94,
+      "type": "PGP_PRIVATE_KEY",
+      "severity": "CRITICAL",
+      "category": "Security",
+      "description": "Potential secret detected: PGP_PRIVATE_KEY",
+      "matched": "***REDACTED***",
+      "suggestion": "Remove secret and use environment variables or secret management"
+    },
+    {
+      "file": "src\\constants.py",
+      "line": 153,
+      "type": "EVAL_USAGE",
+      "severity": "CRITICAL",
+      "category": "Security",
+      "description": "Use of eval() can lead to arbitrary code execution",
+      "matched": "***REDACTED***",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\constants.py",
+      "line": 156,
+      "type": "EXEC_USAGE",
+      "severity": "CRITICAL",
+      "category": "Security",
+      "description": "Use of exec() can lead to arbitrary code execution",
+      "matched": "***REDACTED***",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\constants.py",
+      "line": 162,
+      "type": "OS_SYSTEM",
+      "severity": "HIGH",
+      "category": "Security",
+      "description": "os.system() is vulnerable to command injection, use subprocess",
+      "matched": "***REDACTED***",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\constants.py",
+      "line": 170,
+      "type": "UNSAFE_YAML",
+      "severity": "HIGH",
+      "category": "Security",
+      "description": "yaml.load() without Loader is unsafe, use safe_load()",
+      "matched": "***REDACTED***",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\constants.py",
+      "line": 208,
+      "type": "XSS_DOCUMENT_WRITE",
+      "severity": "HIGH",
+      "category": "Security",
+      "description": "document.write() may lead to XSS",
+      "matched": "***REDACTED***",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\constants.py",
+      "line": 222,
+      "type": "TODO_MARKER",
+      "severity": "INFO",
+      "category": "Code Quality",
+      "description": "Development marker found - review and address",
+      "matched": "TODO",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\constants.py",
+      "line": 223,
+      "type": "TODO_MARKER",
+      "severity": "INFO",
+      "category": "Code Quality",
+      "description": "Development marker found - review and address",
+      "matched": "TODO",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\constants.py",
+      "line": 223,
+      "type": "TODO_MARKER",
+      "severity": "INFO",
+      "category": "Code Quality",
+      "description": "Development marker found - review and address",
+      "matched": "FIXME",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\constants.py",
+      "line": 223,
+      "type": "TODO_MARKER",
+      "severity": "INFO",
+      "category": "Code Quality",
+      "description": "Development marker found - review and address",
+      "matched": "HACK",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\constants.py",
+      "line": 223,
+      "type": "TODO_MARKER",
+      "severity": "INFO",
+      "category": "Code Quality",
+      "description": "Development marker found - review and address",
+      "matched": "XXX",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\constants.py",
+      "line": 223,
+      "type": "TODO_MARKER",
+      "severity": "INFO",
+      "category": "Code Quality",
+      "description": "Development marker found - review and address",
+      "matched": "BUG",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\report_generator.py",
+      "line": 526,
+      "type": "HARDCODED_PASSWORD",
+      "severity": "CRITICAL",
+      "category": "Security",
+      "description": "Potential secret detected: HARDCODED_PASSWORD",
+      "matched": "***REDACTED***",
+      "suggestion": "Remove secret and use environment variables or secret management"
+    },
+    {
+      "file": "src\\report_generator.py",
+      "line": 501,
+      "type": "EVAL_USAGE",
+      "severity": "CRITICAL",
+      "category": "Security",
+      "description": "Use of eval() can lead to arbitrary code execution",
+      "matched": "***REDACTED***",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\report_generator.py",
+      "line": 515,
+      "type": "EXEC_USAGE",
+      "severity": "CRITICAL",
+      "category": "Security",
+      "description": "Use of exec() can lead to arbitrary code execution",
+      "matched": "***REDACTED***",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\report_generator.py",
+      "line": 540,
+      "type": "SQL_INJECTION_FSTRING",
+      "severity": "CRITICAL",
+      "category": "Security",
+      "description": "F-strings in SQL queries lead to injection",
+      "matched": "***REDACTED***",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\report_generator.py",
+      "line": 211,
+      "type": "WEAK_HASH_SHA1",
+      "severity": "MEDIUM",
+      "category": "Security",
+      "description": "SHA1 is cryptographically weak, use SHA-256+",
+      "matched": "***REDACTED***",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\report_generator.py",
+      "line": 395,
+      "type": "TODO_MARKER",
+      "severity": "INFO",
+      "category": "Code Quality",
+      "description": "Development marker found - review and address",
+      "matched": "TODO",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\scanner.py",
+      "line": 174,
+      "type": "PRINT_STATEMENT",
+      "severity": "LOW",
+      "category": "Code Quality",
+      "description": "Print statement found - use logging instead",
+      "matched": "print(f\"\\n\ud83d\udd0d Scanning repository: {self.repo_path}\")",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\scanner.py",
+      "line": 175,
+      "type": "PRINT_STATEMENT",
+      "severity": "LOW",
+      "category": "Code Quality",
+      "description": "Print statement found - use logging instead",
+      "matched": "print(\"=\" * 60)",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\scanner.py",
+      "line": 210,
+      "type": "PRINT_STATEMENT",
+      "severity": "LOW",
+      "category": "Code Quality",
+      "description": "Print statement found - use logging instead",
+      "matched": "print(f\"\\n\u2705 Scan complete: {self._total_files} files, {self.result.total_finding",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\templates.py",
+      "line": 264,
+      "type": "TODO_MARKER",
+      "severity": "INFO",
+      "category": "Code Quality",
+      "description": "Development marker found - review and address",
+      "matched": "TODO",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\templates.py",
+      "line": 264,
+      "type": "TODO_MARKER",
+      "severity": "INFO",
+      "category": "Code Quality",
+      "description": "Development marker found - review and address",
+      "matched": "FIXME",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\__main__.py",
+      "line": 56,
+      "type": "PRINT_STATEMENT",
+      "severity": "LOW",
+      "category": "Code Quality",
+      "description": "Print statement found - use logging instead",
+      "matched": "print(\"\\033[95m\" + ARTIFACT_VIRTUAL_BANNER + \"\\033[0m\")",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\__main__.py",
+      "line": 57,
+      "type": "PRINT_STATEMENT",
+      "severity": "LOW",
+      "category": "Code Quality",
+      "description": "Print statement found - use logging instead",
+      "matched": "print(\"\\033[96m\" + \"=\" * 80 + \"\\033[0m\")",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\__main__.py",
+      "line": 58,
+      "type": "PRINT_STATEMENT",
+      "severity": "LOW",
+      "category": "Code Quality",
+      "description": "Print statement found - use logging instead",
+      "matched": "print(\"\\033[96m  FLEX AUDIT v2.0 - Enterprise Software Security & Quality Analys",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\__main__.py",
+      "line": 59,
+      "type": "PRINT_STATEMENT",
+      "severity": "LOW",
+      "category": "Code Quality",
+      "description": "Print statement found - use logging instead",
+      "matched": "print(\"\\033[96m  Copyright (c)",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\__main__.py",
+      "line": 60,
+      "type": "PRINT_STATEMENT",
+      "severity": "LOW",
+      "category": "Code Quality",
+      "description": "Print statement found - use logging instead",
+      "matched": "print(\"\\033[96m\" + \"=\" * 80 + \"\\033[0m\\n\")",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\__main__.py",
+      "line": 78,
+      "type": "PRINT_STATEMENT",
+      "severity": "LOW",
+      "category": "Code Quality",
+      "description": "Print statement found - use logging instead",
+      "matched": "print(\"\\n\" + \"=\" * 60)",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\__main__.py",
+      "line": 79,
+      "type": "PRINT_STATEMENT",
+      "severity": "LOW",
+      "category": "Code Quality",
+      "description": "Print statement found - use logging instead",
+      "matched": "print(\"\\033[1mAUDIT SUMMARY\\033[0m\")",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\__main__.py",
+      "line": 80,
+      "type": "PRINT_STATEMENT",
+      "severity": "LOW",
+      "category": "Code Quality",
+      "description": "Print statement found - use logging instead",
+      "matched": "print(\"=\" * 60)",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\__main__.py",
+      "line": 82,
+      "type": "PRINT_STATEMENT",
+      "severity": "LOW",
+      "category": "Code Quality",
+      "description": "Print statement found - use logging instead",
+      "matched": "print(f\"\\n  Files Scanned:    {result.stats.get('total_files', 0)",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\__main__.py",
+      "line": 83,
+      "type": "PRINT_STATEMENT",
+      "severity": "LOW",
+      "category": "Code Quality",
+      "description": "Print statement found - use logging instead",
+      "matched": "print(f\"  Lines of Code:    {result.stats.get('total_lines', 0)",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\__main__.py",
+      "line": 84,
+      "type": "PRINT_STATEMENT",
+      "severity": "LOW",
+      "category": "Code Quality",
+      "description": "Print statement found - use logging instead",
+      "matched": "print(f\"  Total Findings:   {result.total_findings}\")",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\__main__.py",
+      "line": 86,
+      "type": "PRINT_STATEMENT",
+      "severity": "LOW",
+      "category": "Code Quality",
+      "description": "Print statement found - use logging instead",
+      "matched": "print(f\"\\n  {color}\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\\033[0m\")",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\__main__.py",
+      "line": 87,
+      "type": "PRINT_STATEMENT",
+      "severity": "LOW",
+      "category": "Code Quality",
+      "description": "Print statement found - use logging instead",
+      "matched": "print(f\"  {color}\u2502     SECURITY SCORE: {score:3d}/100     \u2502\\033[0m\")",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\__main__.py",
+      "line": 88,
+      "type": "PRINT_STATEMENT",
+      "severity": "LOW",
+      "category": "Code Quality",
+      "description": "Print statement found - use logging instead",
+      "matched": "print(f\"  {color}\u2502     GRADE: {grade} - {grade_desc:12s}   \u2502\\033[0m\")",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\__main__.py",
+      "line": 89,
+      "type": "PRINT_STATEMENT",
+      "severity": "LOW",
+      "category": "Code Quality",
+      "description": "Print statement found - use logging instead",
+      "matched": "print(f\"  {color}\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\\033[0m\")",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\__main__.py",
+      "line": 91,
+      "type": "PRINT_STATEMENT",
+      "severity": "LOW",
+      "category": "Code Quality",
+      "description": "Print statement found - use logging instead",
+      "matched": "print(\"\\n  Findings by Severity:\")",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\__main__.py",
+      "line": 92,
+      "type": "PRINT_STATEMENT",
+      "severity": "LOW",
+      "category": "Code Quality",
+      "description": "Print statement found - use logging instead",
+      "matched": "print(f\"     [!!] Critical: {result.critical_count}\")",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\__main__.py",
+      "line": 93,
+      "type": "PRINT_STATEMENT",
+      "severity": "LOW",
+      "category": "Code Quality",
+      "description": "Print statement found - use logging instead",
+      "matched": "print(f\"     [!]  High:     {result.high_count}\")",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\__main__.py",
+      "line": 94,
+      "type": "PRINT_STATEMENT",
+      "severity": "LOW",
+      "category": "Code Quality",
+      "description": "Print statement found - use logging instead",
+      "matched": "print(f\"     [*]  Medium:   {result.medium_count}\")",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\__main__.py",
+      "line": 95,
+      "type": "PRINT_STATEMENT",
+      "severity": "LOW",
+      "category": "Code Quality",
+      "description": "Print statement found - use logging instead",
+      "matched": "print(f\"     [-]  Low:      {result.low_count}\")",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\__main__.py",
+      "line": 96,
+      "type": "PRINT_STATEMENT",
+      "severity": "LOW",
+      "category": "Code Quality",
+      "description": "Print statement found - use logging instead",
+      "matched": "print(f\"     [.]  Info:     {result.info_count}\")",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\__main__.py",
+      "line": 98,
+      "type": "PRINT_STATEMENT",
+      "severity": "LOW",
+      "category": "Code Quality",
+      "description": "Print statement found - use logging instead",
+      "matched": "print(\"\\n\" + \"=\" * 60)",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\__main__.py",
+      "line": 185,
+      "type": "PRINT_STATEMENT",
+      "severity": "LOW",
+      "category": "Code Quality",
+      "description": "Print statement found - use logging instead",
+      "matched": "print(f\"\\033[91mError: Repository path does not exist: {args.repo}\\033[0m\")",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\__main__.py",
+      "line": 223,
+      "type": "PRINT_STATEMENT",
+      "severity": "LOW",
+      "category": "Code Quality",
+      "description": "Print statement found - use logging instead",
+      "matched": "print(\"\\nReports Generated:\")",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\__main__.py",
+      "line": 225,
+      "type": "PRINT_STATEMENT",
+      "severity": "LOW",
+      "category": "Code Quality",
+      "description": "Print statement found - use logging instead",
+      "matched": "print(f\"   * {fmt.upper()",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\__main__.py",
+      "line": 227,
+      "type": "PRINT_STATEMENT",
+      "severity": "LOW",
+      "category": "Code Quality",
+      "description": "Print statement found - use logging instead",
+      "matched": "print(f\"\\nOutput Directory: {args.output}\")",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\__main__.py",
+      "line": 228,
+      "type": "PRINT_STATEMENT",
+      "severity": "LOW",
+      "category": "Code Quality",
+      "description": "Print statement found - use logging instead",
+      "matched": "print(\"\\n\" + \"=\" * 60)",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\__main__.py",
+      "line": 229,
+      "type": "PRINT_STATEMENT",
+      "severity": "LOW",
+      "category": "Code Quality",
+      "description": "Print statement found - use logging instead",
+      "matched": "print(\"\\033[96m  Thank you for using Flex Audit by ARTIFACT virtual\\033[0m\")",
+      "suggestion": ""
+    },
+    {
+      "file": "src\\__main__.py",
+      "line": 230,
+      "type": "PRINT_STATEMENT",
+      "severity": "LOW",
+      "category": "Code Quality",
+      "description": "Print statement found - use logging instead",
+      "matched": "print(\"=\" * 60 + \"\\n\")",
+      "suggestion": ""
+    }
+  ],
+  "files_analyzed": [
+    {
+      "path": ".flexauditignore",
+      "language": "Other",
+      "lines": 11,
+      "size": 146,
+      "findings_count": 0,
+      "hash": "fe60e51e797357ce"
+    },
+    {
+      "path": "auditor.py",
+      "language": "Python",
+      "lines": 259,
+      "size": 8808,
+      "findings_count": 6,
+      "hash": "74d3b742bb945ab2"
+    },
+    {
+      "path": "README.md",
+      "language": "Markdown",
+      "lines": 335,
+      "size": 9215,
+      "findings_count": 0,
+      "hash": "37ceb008c6f12e4b"
+    },
+    {
+      "path": "requirements.txt",
+      "language": "Other",
+      "lines": 16,
+      "size": 707,
+      "findings_count": 0,
+      "hash": "5f926e8a21a28045"
+    },
+    {
+      "path": "__init__.py",
+      "language": "Python",
+      "lines": 54,
+      "size": 2091,
+      "findings_count": 0,
+      "hash": "06d933f6a9a3d8ec"
+    },
+    {
+      "path": "docs\\CODE_OF_CONDUCT.md",
+      "language": "Markdown",
+      "lines": 18,
+      "size": 707,
+      "findings_count": 0,
+      "hash": "2d79e0b2f36141f4"
+    },
+    {
+      "path": "docs\\CONTRIBUTING.md",
+      "language": "Markdown",
+      "lines": 26,
+      "size": 1029,
+      "findings_count": 1,
+      "hash": "4e387b8e7252dd2f"
+    },
+    {
+      "path": "docs\\guide.html",
+      "language": "HTML",
+      "lines": 39,
+      "size": 1300,
+      "findings_count": 0,
+      "hash": "56f4799fd7c60929"
+    },
+    {
+      "path": "docs\\index.html",
+      "language": "HTML",
+      "lines": 288,
+      "size": 15063,
+      "findings_count": 0,
+      "hash": "fd60aab24fc8dcf2"
+    },
+    {
+      "path": "docs\\LICENSE",
+      "language": "Other",
+      "lines": 22,
+      "size": 1073,
+      "findings_count": 0,
+      "hash": "cd2d2a66bd13cd70"
+    },
+    {
+      "path": "docs\\script.js",
+      "language": "JavaScript",
+      "lines": 177,
+      "size": 7468,
+      "findings_count": 12,
+      "hash": "ede305d60a6d3279"
+    },
+    {
+      "path": "docs\\SECURITY.md",
+      "language": "Markdown",
+      "lines": 13,
+      "size": 468,
+      "findings_count": 0,
+      "hash": "8bec22995bbea644"
+    },
+    {
+      "path": "docs\\style.css",
+      "language": "CSS",
+      "lines": 82,
+      "size": 5364,
+      "findings_count": 0,
+      "hash": "83e4df75687f9819"
+    },
+    {
+      "path": "docs\\template.md",
+      "language": "Markdown",
+      "lines": 623,
+      "size": 7341,
+      "findings_count": 0,
+      "hash": "2c828c1bd6261fcc"
+    },
+    {
+      "path": "src\\constants.py",
+      "language": "Python",
+      "lines": 334,
+      "size": 14363,
+      "findings_count": 16,
+      "hash": "140552a48013283a"
+    },
+    {
+      "path": "src\\report_generator.py",
+      "language": "Python",
+      "lines": 556,
+      "size": 21735,
+      "findings_count": 6,
+      "hash": "5804f6868bfd8318"
+    },
+    {
+      "path": "src\\scanner.py",
+      "language": "Python",
+      "lines": 454,
+      "size": 17198,
+      "findings_count": 3,
+      "hash": "17c9f26b9cdefdd1"
+    },
+    {
+      "path": "src\\templates.py",
+      "language": "Python",
+      "lines": 665,
+      "size": 18975,
+      "findings_count": 2,
+      "hash": "72a7db17e2b7a637"
+    },
+    {
+      "path": "src\\__init__.py",
+      "language": "Python",
+      "lines": 28,
+      "size": 1431,
+      "findings_count": 0,
+      "hash": "0f8aebac44df35c8"
+    },
+    {
+      "path": "src\\__main__.py",
+      "language": "Python",
+      "lines": 250,
+      "size": 8549,
+      "findings_count": 29,
+      "hash": "67b424af7dd0f3bc"
+    }
+  ]
+}

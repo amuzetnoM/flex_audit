@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flex Audit Report - flex_audit</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+            --dark: #1f2937;
+            --light: #f9fafb;
+            --gray: #6b7280;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+            color: var(--light);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 3rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .logo {
+            font-family: 'Courier New', monospace;
+            font-size: 0.6rem;
+            color: var(--primary);
+            white-space: pre;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header .subtitle {
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+        
+        .meta-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .meta-item {
+            background: rgba(255,255,255,0.05);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .meta-item span {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        /* Score Card */
+        .score-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .score-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .score-value {
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .score-label {
+            font-size: 1.2rem;
+            color: var(--gray);
+            margin-top: 0.5rem;
+        }
+        
+        .grade {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-top: 1rem;
+        }
+        
+        .grade-a { background: var(--success); color: white; }
+        .grade-b { background: var(--info); color: white; }
+        .grade-c { background: var(--warning); color: white; }
+        .grade-d { background: var(--danger); color: white; }
+        .grade-f { background: #7f1d1d; color: white; }
+        
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+        
+        .stat-item {
+            background: rgba(255,255,255,0.03);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-top: 0.25rem;
+        }
+        
+        /* Severity badges */
+        .severity {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .severity-critical { background: rgba(239, 68, 68, 0.2); color: #fca5a5; }
+        .severity-high { background: rgba(245, 158, 11, 0.2); color: #fcd34d; }
+        .severity-medium { background: rgba(234, 179, 8, 0.2); color: #fde047; }
+        .severity-low { background: rgba(59, 130, 246, 0.2); color: #93c5fd; }
+        .severity-info { background: rgba(107, 114, 128, 0.2); color: #d1d5db; }
+        
+        /* Findings Section */
+        .findings-section {
+            background: rgba(255,255,255,0.03);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .findings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .findings-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .findings-count {
+            background: var(--primary);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.85rem;
+        }
+        
+        .findings-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .findings-table th,
+        .findings-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .findings-table th {
+            color: var(--gray);
+            font-weight: 500;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .findings-table tr:hover {
+            background: rgba(255,255,255,0.02);
+        }
+        
+        .file-path {
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: var(--primary);
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 3rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: var(--gray);
+        }
+        
+        .footer-logo {
+            font-family: 'Courier New', monospace;
+            font-size: 0.5rem;
+            color: var(--primary);
+            white-space: pre;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            opacity: 0.7;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .score-value {
+                font-size: 3rem;
+            }
+            
+            .logo, .footer-logo {
+                font-size: 0.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <pre class="logo">
+   _____ _____________________.___________________  ____________________
+  /  _  \\______   \__    ___/|   \_   _____/  _  \ \_   ___ \__    ___/
+ /  /_\  \|       _/ |    |   |   ||    __)/  /_\  \/    \  \/ |    |   
+/    |    \    |   \ |    |   |   ||     \/    |    \     \____|    |   
+\____|__  /____|_  / |____|   |___|\___  /\____|__  /\______  /|____|   
+        \/       \/                    \/         \/        \/          
+      .__         __               .__                                  
+___  _|__|_______/  |_ __ _______  |  |                                 
+\  \/ /  \_  __ \   __\  |  \__  \ |  |                                 
+ \   /|  ||  | \/|  | |  |  // __ \|  |__                               
+  \_/ |__||__|   |__| |____/(____  /____/                               
+                                 \/                                     
+</pre>
+            <h1>FLEX AUDIT REPORT</h1>
+            <p class="subtitle">Enterprise Software Security & Quality Analysis</p>
+            <div class="meta-info">
+                <div class="meta-item">Project: <span>flex_audit</span></div>
+                <div class="meta-item">Date: <span>2025-12-06 19:07 UTC</span></div>
+                <div class="meta-item">Version: <span>1.0</span></div>
+            </div>
+        </header>
+        
+        <section class="score-section">
+            <div class="score-card">
+                <div class="score-value">0</div>
+                <div class="score-label">Security Score</div>
+                <div class="grade grade-f">F - Critical</div>
+            </div>
+            <div class="score-card">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value">20</div>
+                        <div class="stat-label">Files Scanned</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">4,250</div>
+                        <div class="stat-label">Lines of Code</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">75</div>
+                        <div class="stat-label">Issues Found</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">13</div>
+                        <div class="stat-label">Critical</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        
+            <div class="findings-section">
+                <div class="findings-header">
+                    <div class="findings-title">[SEC] Security</div>
+                    <span class="findings-count">25 issues</span>
+                </div>
+                <table class="findings-table">
+                    <thead>
+                        <tr>
+                            <th>Severity</th>
+                            <th>Location</th>
+                            <th>Issue</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            
+                        <tr>
+                            <td><span class="severity severity-critical">CRITICAL</span></td>
+                            <td class="file-path">docs\script.js:45</td>
+                            <td><strong>EVAL_USAGE</strong></td>
+                            <td>Use of eval() can lead to arbitrary code execution...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-critical">CRITICAL</span></td>
+                            <td class="file-path">docs\script.js:140</td>
+                            <td><strong>EVAL_USAGE</strong></td>
+                            <td>Use of eval() can lead to arbitrary code execution...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-critical">CRITICAL</span></td>
+                            <td class="file-path">src\constants.py:90</td>
+                            <td><strong>PRIVATE_KEY</strong></td>
+                            <td>Potential secret detected: PRIVATE_KEY...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-critical">CRITICAL</span></td>
+                            <td class="file-path">src\constants.py:92</td>
+                            <td><strong>PRIVATE_KEY</strong></td>
+                            <td>Potential secret detected: PRIVATE_KEY...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-critical">CRITICAL</span></td>
+                            <td class="file-path">src\constants.py:90</td>
+                            <td><strong>RSA_PRIVATE_KEY</strong></td>
+                            <td>Potential secret detected: RSA_PRIVATE_KEY...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-critical">CRITICAL</span></td>
+                            <td class="file-path">src\constants.py:92</td>
+                            <td><strong>EC_PRIVATE_KEY</strong></td>
+                            <td>Potential secret detected: EC_PRIVATE_KEY...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-critical">CRITICAL</span></td>
+                            <td class="file-path">src\constants.py:94</td>
+                            <td><strong>PGP_PRIVATE_KEY</strong></td>
+                            <td>Potential secret detected: PGP_PRIVATE_KEY...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-critical">CRITICAL</span></td>
+                            <td class="file-path">src\constants.py:153</td>
+                            <td><strong>EVAL_USAGE</strong></td>
+                            <td>Use of eval() can lead to arbitrary code execution...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-critical">CRITICAL</span></td>
+                            <td class="file-path">src\constants.py:156</td>
+                            <td><strong>EXEC_USAGE</strong></td>
+                            <td>Use of exec() can lead to arbitrary code execution...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-critical">CRITICAL</span></td>
+                            <td class="file-path">src\report_generator.py:526</td>
+                            <td><strong>HARDCODED_PASSWORD</strong></td>
+                            <td>Potential secret detected: HARDCODED_PASSWORD...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-critical">CRITICAL</span></td>
+                            <td class="file-path">src\report_generator.py:501</td>
+                            <td><strong>EVAL_USAGE</strong></td>
+                            <td>Use of eval() can lead to arbitrary code execution...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-critical">CRITICAL</span></td>
+                            <td class="file-path">src\report_generator.py:515</td>
+                            <td><strong>EXEC_USAGE</strong></td>
+                            <td>Use of exec() can lead to arbitrary code execution...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-critical">CRITICAL</span></td>
+                            <td class="file-path">src\report_generator.py:540</td>
+                            <td><strong>SQL_INJECTION_FSTRING</strong></td>
+                            <td>F-strings in SQL queries lead to injection...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-high">HIGH</span></td>
+                            <td class="file-path">docs\script.js:52</td>
+                            <td><strong>XSS_INNERHTML</strong></td>
+                            <td>innerHTML assignment may lead to XSS...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-high">HIGH</span></td>
+                            <td class="file-path">docs\script.js:55</td>
+                            <td><strong>XSS_INNERHTML</strong></td>
+                            <td>innerHTML assignment may lead to XSS...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-high">HIGH</span></td>
+                            <td class="file-path">docs\script.js:62</td>
+                            <td><strong>XSS_INNERHTML</strong></td>
+                            <td>innerHTML assignment may lead to XSS...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-high">HIGH</span></td>
+                            <td class="file-path">docs\script.js:90</td>
+                            <td><strong>XSS_INNERHTML</strong></td>
+                            <td>innerHTML assignment may lead to XSS...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-high">HIGH</span></td>
+                            <td class="file-path">docs\script.js:94</td>
+                            <td><strong>XSS_INNERHTML</strong></td>
+                            <td>innerHTML assignment may lead to XSS...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-high">HIGH</span></td>
+                            <td class="file-path">docs\script.js:148</td>
+                            <td><strong>XSS_INNERHTML</strong></td>
+                            <td>innerHTML assignment may lead to XSS...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-high">HIGH</span></td>
+                            <td class="file-path">docs\script.js:154</td>
+                            <td><strong>XSS_INNERHTML</strong></td>
+                            <td>innerHTML assignment may lead to XSS...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-high">HIGH</span></td>
+                            <td class="file-path">docs\script.js:164</td>
+                            <td><strong>XSS_INNERHTML</strong></td>
+                            <td>innerHTML assignment may lead to XSS...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-high">HIGH</span></td>
+                            <td class="file-path">src\constants.py:162</td>
+                            <td><strong>OS_SYSTEM</strong></td>
+                            <td>os.system() is vulnerable to command injection, use subproce...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-high">HIGH</span></td>
+                            <td class="file-path">src\constants.py:170</td>
+                            <td><strong>UNSAFE_YAML</strong></td>
+                            <td>yaml.load() without Loader is unsafe, use safe_load()...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-high">HIGH</span></td>
+                            <td class="file-path">src\constants.py:208</td>
+                            <td><strong>XSS_DOCUMENT_WRITE</strong></td>
+                            <td>document.write() may lead to XSS...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-medium">MEDIUM</span></td>
+                            <td class="file-path">src\report_generator.py:211</td>
+                            <td><strong>WEAK_HASH_SHA1</strong></td>
+                            <td>SHA1 is cryptographically weak, use SHA-256+...</td>
+                        </tr>
+                
+                    </tbody>
+                </table>
+            </div>
+            
+
+            <div class="findings-section">
+                <div class="findings-header">
+                    <div class="findings-title">[CODE] Code Quality</div>
+                    <span class="findings-count">50 issues</span>
+                </div>
+                <table class="findings-table">
+                    <thead>
+                        <tr>
+                            <th>Severity</th>
+                            <th>Location</th>
+                            <th>Issue</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            
+                        <tr>
+                            <td><span class="severity severity-medium">MEDIUM</span></td>
+                            <td class="file-path">auditor.py:148</td>
+                            <td><strong>BARE_EXCEPT</strong></td>
+                            <td>Bare except catches all exceptions including KeyboardInterru...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-medium">MEDIUM</span></td>
+                            <td class="file-path">auditor.py:148</td>
+                            <td><strong>BARE_EXCEPT_AST</strong></td>
+                            <td>Bare except catches all exceptions including SystemExit...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-low">LOW</span></td>
+                            <td class="file-path">src\scanner.py:174</td>
+                            <td><strong>PRINT_STATEMENT</strong></td>
+                            <td>Print statement found - use logging instead...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-low">LOW</span></td>
+                            <td class="file-path">src\scanner.py:175</td>
+                            <td><strong>PRINT_STATEMENT</strong></td>
+                            <td>Print statement found - use logging instead...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-low">LOW</span></td>
+                            <td class="file-path">src\scanner.py:210</td>
+                            <td><strong>PRINT_STATEMENT</strong></td>
+                            <td>Print statement found - use logging instead...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-low">LOW</span></td>
+                            <td class="file-path">src\__main__.py:56</td>
+                            <td><strong>PRINT_STATEMENT</strong></td>
+                            <td>Print statement found - use logging instead...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-low">LOW</span></td>
+                            <td class="file-path">src\__main__.py:57</td>
+                            <td><strong>PRINT_STATEMENT</strong></td>
+                            <td>Print statement found - use logging instead...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-low">LOW</span></td>
+                            <td class="file-path">src\__main__.py:58</td>
+                            <td><strong>PRINT_STATEMENT</strong></td>
+                            <td>Print statement found - use logging instead...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-low">LOW</span></td>
+                            <td class="file-path">src\__main__.py:59</td>
+                            <td><strong>PRINT_STATEMENT</strong></td>
+                            <td>Print statement found - use logging instead...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-low">LOW</span></td>
+                            <td class="file-path">src\__main__.py:60</td>
+                            <td><strong>PRINT_STATEMENT</strong></td>
+                            <td>Print statement found - use logging instead...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-low">LOW</span></td>
+                            <td class="file-path">src\__main__.py:78</td>
+                            <td><strong>PRINT_STATEMENT</strong></td>
+                            <td>Print statement found - use logging instead...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-low">LOW</span></td>
+                            <td class="file-path">src\__main__.py:79</td>
+                            <td><strong>PRINT_STATEMENT</strong></td>
+                            <td>Print statement found - use logging instead...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-low">LOW</span></td>
+                            <td class="file-path">src\__main__.py:80</td>
+                            <td><strong>PRINT_STATEMENT</strong></td>
+                            <td>Print statement found - use logging instead...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-low">LOW</span></td>
+                            <td class="file-path">src\__main__.py:82</td>
+                            <td><strong>PRINT_STATEMENT</strong></td>
+                            <td>Print statement found - use logging instead...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-low">LOW</span></td>
+                            <td class="file-path">src\__main__.py:83</td>
+                            <td><strong>PRINT_STATEMENT</strong></td>
+                            <td>Print statement found - use logging instead...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-low">LOW</span></td>
+                            <td class="file-path">src\__main__.py:84</td>
+                            <td><strong>PRINT_STATEMENT</strong></td>
+                            <td>Print statement found - use logging instead...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-low">LOW</span></td>
+                            <td class="file-path">src\__main__.py:86</td>
+                            <td><strong>PRINT_STATEMENT</strong></td>
+                            <td>Print statement found - use logging instead...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-low">LOW</span></td>
+                            <td class="file-path">src\__main__.py:87</td>
+                            <td><strong>PRINT_STATEMENT</strong></td>
+                            <td>Print statement found - use logging instead...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-low">LOW</span></td>
+                            <td class="file-path">src\__main__.py:88</td>
+                            <td><strong>PRINT_STATEMENT</strong></td>
+                            <td>Print statement found - use logging instead...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-low">LOW</span></td>
+                            <td class="file-path">src\__main__.py:89</td>
+                            <td><strong>PRINT_STATEMENT</strong></td>
+                            <td>Print statement found - use logging instead...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-low">LOW</span></td>
+                            <td class="file-path">src\__main__.py:91</td>
+                            <td><strong>PRINT_STATEMENT</strong></td>
+                            <td>Print statement found - use logging instead...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-low">LOW</span></td>
+                            <td class="file-path">src\__main__.py:92</td>
+                            <td><strong>PRINT_STATEMENT</strong></td>
+                            <td>Print statement found - use logging instead...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-low">LOW</span></td>
+                            <td class="file-path">src\__main__.py:93</td>
+                            <td><strong>PRINT_STATEMENT</strong></td>
+                            <td>Print statement found - use logging instead...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-low">LOW</span></td>
+                            <td class="file-path">src\__main__.py:94</td>
+                            <td><strong>PRINT_STATEMENT</strong></td>
+                            <td>Print statement found - use logging instead...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-low">LOW</span></td>
+                            <td class="file-path">src\__main__.py:95</td>
+                            <td><strong>PRINT_STATEMENT</strong></td>
+                            <td>Print statement found - use logging instead...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-low">LOW</span></td>
+                            <td class="file-path">src\__main__.py:96</td>
+                            <td><strong>PRINT_STATEMENT</strong></td>
+                            <td>Print statement found - use logging instead...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-low">LOW</span></td>
+                            <td class="file-path">src\__main__.py:98</td>
+                            <td><strong>PRINT_STATEMENT</strong></td>
+                            <td>Print statement found - use logging instead...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-low">LOW</span></td>
+                            <td class="file-path">src\__main__.py:185</td>
+                            <td><strong>PRINT_STATEMENT</strong></td>
+                            <td>Print statement found - use logging instead...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-low">LOW</span></td>
+                            <td class="file-path">src\__main__.py:223</td>
+                            <td><strong>PRINT_STATEMENT</strong></td>
+                            <td>Print statement found - use logging instead...</td>
+                        </tr>
+                
+                        <tr>
+                            <td><span class="severity severity-low">LOW</span></td>
+                            <td class="file-path">src\__main__.py:225</td>
+                            <td><strong>PRINT_STATEMENT</strong></td>
+                            <td>Print statement found - use logging instead...</td>
+                        </tr>
+                
+                    </tbody>
+                </table>
+            </div>
+            
+        
+        <footer class="footer">
+            <pre class="footer-logo">
+   _____ _____________________.___________________  ____________________
+  /  _  \\______   \__    ___/|   \_   _____/  _  \ \_   ___ \__    ___/
+ /  /_\  \|       _/ |    |   |   ||    __)/  /_\  \/    \  \/ |    |   
+/    |    \    |   \ |    |   |   ||     \/    |    \     \____|    |   
+\____|__  /____|_  / |____|   |___|\___  /\____|__  /\______  /|____|   
+        \/       \/                    \/         \/        \/          
+      .__         __               .__                                  
+___  _|__|_______/  |_ __ _______  |  |                                 
+\  \/ /  \_  __ \   __\  |  \__  \ |  |                                 
+ \   /|  ||  | \/|  | |  |  // __ \|  |__                               
+  \_/ |__||__|   |__| |____/(____  /____/                               
+                                 \/                                     
+</pre>
+            <p><strong>© 2025 ARTIFACT virtual</strong> - Enterprise Software Intelligence</p>
+            <p style="margin-top: 0.5rem; font-size: 0.85rem;">
+                Generated by Flex Audit v2.0 | Standards: OWASP, CWE, SANS Top 25
+            </p>
+        </footer>
+    </div>
+</body>
+</html>
