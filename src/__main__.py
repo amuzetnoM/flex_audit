@@ -53,7 +53,7 @@ from src.templates import FLEX_AUDIT_BANNER, ARTIFACT_VIRTUAL_BANNER, get_grade
 
 def print_banner():
     """Print the Flex Audit banner."""
-    print("\033[95m" + ARTIFACT_VIRTUAL_BANNER + "\033[0m")
+    # Print a compact, colored header instead of the large ASCII art
     print("\033[96m" + "=" * 80 + "\033[0m")
     print("\033[96m  FLEX AUDIT v2.0 - Enterprise Software Security & Quality Analysis\033[0m")
     print("\033[96m  Copyright (c) 2025 ARTIFACT virtual\033[0m")
