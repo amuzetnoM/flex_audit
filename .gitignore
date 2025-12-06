@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual Envs
+venv/
+venv*/
+.env
+.venv
+venv312/
+site-packages/
+
+# Build & distribution
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# IDEs
+.vscode/
+.idea/
+
+# Logs and output
+audit_output/
+test_output/
+
+# OS
+.DS_Store
+Thumbs.db

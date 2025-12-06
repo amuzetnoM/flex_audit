@@ -1,0 +1,10 @@
+# Ignore developer environments and artifacts
+venv*
+site-packages
+build
+dist
+node_modules
+
+# Ignore local test outputs
+audit_output/
+test_output/

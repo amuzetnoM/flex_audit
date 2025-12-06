@@ -1,0 +1,15 @@
+# ══════════════════════════════════════════════════════════════════════════════
+# Flex Audit - Dependencies
+# Copyright (c) 2025 ARTIFACT virtual
+# ══════════════════════════════════════════════════════════════════════════════
+
+# Core dependencies
+jinja2>=3.1.0          # Template engine for reports
+colorama>=0.4.6        # Cross-platform colored terminal output
+rich>=13.0.0           # Rich text and beautiful formatting
+pygments>=2.16.0       # Syntax highlighting for code snippets
+
+# Optional dependencies for enhanced features
+# chardet>=5.0.0       # Character encoding detection
+# toml>=0.10.0         # TOML config file parsing (built-in 3.11+)
+# pyyaml>=6.0          # YAML config file parsing
