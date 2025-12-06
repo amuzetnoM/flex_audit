@@ -46,7 +46,8 @@
     <header>
       <div class="logo">FLEX AUDIT</div>
       <div>
-        <h1>Flex Audit — Enterprise Static Auditor</h1>
+      </div>
+      <script src="./script.js"></script>
         <p class="lead">Multi-language, extensible static analyzer with scriptable rules, insightful reports and SARIF integration for enterprise CI/CD.</p>
         <div class="hero-cta"><a class="btn" href="../README.md">Get Started</a> <a class="btn" href="#features" style="background:#475569">Documentation</a></div>
       </div>
@@ -57,6 +58,44 @@
         <section class="doc-section" id="overview">
           <h2>Overview</h2>
           <p class="muted">Flex Audit is a comprehensive, extensible auditing framework for code and configuration. It combines regex scanning, AST analysis for Python, vulnerability heuristics, and policy-driven reporting. This documentation summarizes what Flex Audit can do and how to operate it in CI or local environments.</p>
+        </section>
+
+        <section class="doc-section" id="interactive">
+          <h2>Interactive Demo</h2>
+          <div class="feature-grid">
+            <div class="card score-card">
+              <div class="score-value" id="scoreValue">78</div>
+              <div id="gradeBadge" class="score-grade grade-c">C</div>
+              <div class="slider-row">
+                <input type="range" id="scoreSlider" min="0" max="100" value="78" />
+                <div id="scoreLabel" class="muted">Score</div>
+              </div>
+              <div class="muted">Drag the slider to preview grade and severity behavior for CI gates.</div>
+            </div>
+
+            <div class="card" style="padding:10px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <div><strong>CLI Quick Commands</strong></div>
+                <button class="copy-btn" id="copyCmd">Copy</button>
+              </div>
+              <pre id="cliCmd" style="margin-top:8px;background:transparent;">python -m flex_audit.src ./ --format html --skip-third-party --output ./audit_output</pre>
+            </div>
+          </div>
+
+          <div style="margin-top:12px" class="card">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <strong>Sample Findings</strong>
+              <div class="filter-row">
+                <div class="chip active" data-sev="all">All</div>
+                <div class="chip" data-sev="CRITICAL">Critical</div>
+                <div class="chip" data-sev="HIGH">High</div>
+                <div class="chip" data-sev="MEDIUM">Medium</div>
+                <div class="chip" data-sev="LOW">Low</div>
+                <div class="chip" data-sev="INFO">Info</div>
+              </div>
+            </div>
+            <ul class="findings-list" id="findingsList"></ul>
+          </div>
         </section>
 
         <section class="doc-section" id="features">
