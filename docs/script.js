@@ -1,3 +1,101 @@
+/* Modern interactive script for Flex Audit docs landing */
+document.addEventListener('DOMContentLoaded', function(){
+  // Elements
+  const slider = document.getElementById('scoreSlider');
+  const scoreValue = document.getElementById('scoreValue');
+  const gradeBadge = document.getElementById('gradeBadge');
+  const copyBtn = document.getElementById('copyCmd');
+  const cliCmd = document.getElementById('cliCmd');
+  const findingsList = document.getElementById('findingsList');
+  const chips = document.querySelectorAll('.chip');
+
+  function gradeForScore(s){
+    s = Number(s);
+    if (s >= 90) return ['A+', 'grade-a'];
+    if (s >= 80) return ['A', 'grade-a'];
+    if (s >= 70) return ['B', 'grade-b'];
+    if (s >= 60) return ['C', 'grade-c'];
+    if (s >= 50) return ['D', 'grade-d'];
+    return ['F', 'grade-f'];
+  }
+
+  function updateScore(s){
+    scoreValue.textContent = s;
+    const [g, cls] = gradeForScore(s);
+    gradeBadge.textContent = g;
+    gradeBadge.className = 'score-grade ' + cls;
+  }
+
+  slider.addEventListener('input', e => updateScore(e.target.value));
+  updateScore(slider.value);
+
+  copyBtn.addEventListener('click', async ()=>{
+    try{
+      await navigator.clipboard.writeText(cliCmd.textContent.trim());
+      copyBtn.textContent = 'Copied!';
+      setTimeout(()=> copyBtn.textContent = 'Copy', 1200);
+    }catch(e){
+      copyBtn.textContent = 'Copy (use Ctrl+C)';
+    }
+  });
+
+  // Sample findings
+  const sampleFindings = [
+    {file:'src/scanner.py',line:102,type:'UNSAFE_PICKLE',severity:'CRITICAL',desc:'Unpickling untrusted data can execute arbitrary code'},
+    {file:'src/scanner.py',line:78,type:'EVAL_USAGE',severity:'CRITICAL',desc:'eval() usage detected'},
+    {file:'src/constants.py',line:220,type:'TODO_MARKER',severity:'INFO',desc:'Found TODO markers'},
+    {file:'src/report_generator.py',line:45,type:'UNPINNED_DEPENDENCY',severity:'MEDIUM',desc:'Dependency not pinned'},
+    {file:'src/__main__.py',line:140,type:'DEBUG_ENABLED',severity:'MEDIUM',desc:'Debug mode enabled'},
+  ];
+
+  function renderFindings(filter='all'){
+    findingsList.innerHTML='';
+    const items = sampleFindings.filter(f => filter === 'all' || f.severity === filter);
+    if (!items.length) {
+      findingsList.innerHTML = '<div class="muted">No matching results.</div>';
+      return;
+    }
+    items.forEach(it => {
+      const li = document.createElement('li');
+      li.className = 'finding';
+      const left = document.createElement('div');
+      left.innerHTML = `<div><strong>${it.type}</strong><div class="meta">${it.file}:${it.line}</div><div class="muted" style="font-size:0.9rem;margin-top:6px">${it.desc}</div></div>`
+      const right = document.createElement('div');
+      const badge = document.createElement('div');
+      badge.className = 'severity-badge ' + (it.severity === 'CRITICAL' ? 'sev-critical' : it.severity === 'HIGH' ? 'sev-high' : it.severity === 'MEDIUM' ? 'sev-medium' : 'sev-low');
+      badge.textContent = it.severity;
+      right.appendChild(badge);
+      li.appendChild(left);
+      li.appendChild(right);
+      findingsList.appendChild(li);
+    })
+  }
+  renderFindings();
+
+  document.querySelectorAll('.chip').forEach(ch => {
+    ch.addEventListener('click', () => {
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      ch.classList.add('active');
+      renderFindings(ch.getAttribute('data-sev'));
+    });
+  })
+
+  // Quick scan simulator
+  const scanForm = document.getElementById('scanForm');
+  const scanPath = document.getElementById('scanPath');
+  const scanOutput = document.getElementById('scanOutput');
+  if (scanForm) {
+    scanForm.addEventListener('submit', e => {
+      e.preventDefault();
+      scanOutput.innerHTML = '<div class="muted">Scanning '+scanPath.value+'...</div>';
+      setTimeout(()=>{
+        const randomScore = Math.max(12, Math.floor(Math.random()*100));
+        updateScore(randomScore);
+        scanOutput.innerHTML = `<div style="margin-top:8px">Sample scan complete — score: <strong>${randomScore}</strong>. Found <strong>${Math.floor(Math.random()*6)}</strong> issues (demo).</div>`;
+      }, 800);
+    })
+  }
+});
 // Simple interactive script for the Docs landing page
 document.addEventListener('DOMContentLoaded', function () {
   const slider = document.getElementById('scoreSlider');

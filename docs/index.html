@@ -1,13 +1,138 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Flex Audit — Enterprise Static Audit</title>
+    <meta name="description" content="Enterprise static analyzer for secrets, vulnerabilities, and code quality" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="topnav">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div class="logo">FLEX AUDIT</div>
+          <div style="display:flex;flex-direction:column">
+            <div class="hero-title">Enterprise Static Auditor</div>
+            <div class="muted">A fully extensible static auditor with CI-friendly reporting</div>
+          </div>
+        </div>
+        <nav class="nav-links">
+          <a href="#overview">Overview</a>
+          <a href="#features">Features</a>
+          <a href="#interactive">Playground</a>
+          <a href="README.md">Readme</a>
+        </nav>
+      </header>
+
+      <main class="hero">
+        <section>
+          <div class="card">
+            <h1 class="hero-title">Flex Audit</h1>
+            <p class="hero-sub">A powerful, multi-language, extensible static analyzer for enterprise codebases. Built for CI/CD, remediation, and team adoption.</p>
+            <div class="hero-cta" style="margin-top:18px">
+              <a class="btn-primary" href="README.md">Get Started</a>
+              <a class="btn-ghost" href="#interactive">Try Demo</a>
+            </div>
+
+            <div class="feature-grid" style="margin-top:22px">
+              <div class="feature card"><div class="icon" style="background:linear-gradient(90deg,var(--accent),var(--accent-2))">🔐</div><div><h4>Secret Detection</h4><p>Scan for API keys, private keys, and tokens to avoid leaks.</p></div></div>
+              <div class="feature card"><div class="icon" style="background:linear-gradient(90deg,#10b981,#34d399)">🛡️</div><div><h4>Vulnerability Heuristics</h4><p>Detect eval/exec, arguments to shell, SQL injection patterns and more.</p></div></div>
+              <div class="feature card"><div class="icon" style="background:linear-gradient(90deg,#f59e0b,#f97316)">⚠️</div><div><h4>AST Checks</h4><p>Deep Python AST checks catch mutable defaults, bare excepts and smells.</p></div></div>
+              <div class="feature card"><div class="icon" style="background:linear-gradient(90deg,#ef4444,#fb7185)">📊</div><div><h4>SARIF & CI</h4><p>SARIF export for GitHub Code Scanning and CI integration.</p></div></div>
+            </div>
+          </div>
+        </section>
+
+        <aside class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div style="display:flex;flex-direction:column">
+              <strong>Quick CLI</strong>
+              <div class="muted">Copy to clipboard to use locally</div>
+            </div>
+            <button class="copy-btn" id="copyCmd">Copy</button>
+          </div>
+          <pre id="cliCmd" class="muted" style="margin-top:10px">python -m flex_audit.src ./ --format html --skip-third-party --output ./audit_output</pre>
+          <hr style="margin:12px 0; border-color:rgba(255,255,255,0.04)" />
+
+          <strong>Project</strong>
+          <div class="muted" style="margin-top:6px">Version 2.0 • ARTIFACT virtual</div>
+          <div style="margin-top:12px"><a class="btn-ghost" href="CONTRIBUTING.md">Contribute</a></div>
+        </aside>
+      </main>
+
+      <section style="margin-top:24px">
+        <div class="card">
+          <h3 id="overview">Overview</h3>
+          <p class="muted">Flex Audit is an extensible framework that scans source code and configurations. It provides prioritised, actionable results and remediation suggestions to help teams fix issues and ship with confidence.</p>
+        </div>
+      </section>
+
+      <section style="margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:18px">
+        <div class="card">
+          <h3 id="features">Key Features</h3>
+          <ul>
+            <li>Secrets & keys detection</li>
+            <li>Vulnerability heuristics across languages</li>
+            <li>Code quality and AST checks for Python</li>
+            <li>Markdown/HTML/JSON and SARIF report outputs</li>
+            <li>Baseline and CI integrations (planned)</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Reference</h3>
+          <div class="muted">Command-line flags, how to integrate in CI, and developer best practices can be found in the repo's README and docs.</div>
+        </div>
+      </section>
+
+      <section id="interactive" style="margin-top:18px">
+        <div class="card">
+          <h3>Playground — Simulate a Scan</h3>
+          <div style="display:flex;gap:12px;align-items:center;margin-top:8px">
+            <input id="scanPath" placeholder="path/to/repo (demo)" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#e6eef8" />
+            <button class="btn-primary" id="startScan">Run Demo Scan</button>
+          </div>
+          <div id="scanOutput" style="margin-top:12px" class="muted"></div>
+
+          <h4 style="margin-top:16px">Interactive Findings</h4>
+          <div style="margin-top:10px">
+            <div class="filter-row" style="margin-bottom:10px">
+              <div class="chip active" data-sev="all">All</div>
+              <div class="chip" data-sev="CRITICAL">Critical</div>
+              <div class="chip" data-sev="HIGH">High</div>
+              <div class="chip" data-sev="MEDIUM">Medium</div>
+              <div class="chip" data-sev="LOW">Low</div>
+            </div>
+            <ul id="findingsList" class="findings-list"></ul>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div>© 2025 ARTIFACT virtual • Flex Audit</div>
+        <div style="margin-top:6px"><a href="README.md">Readme</a> • <a href="CONTRIBUTING.md">Contributing</a> • <a href="SECURITY.md">Security</a></div>
+      </footer>
+    </div>
+    <script src="./script.js"></script>
+  </body>
+</html>
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Flex Audit — Enterprise Static Auditor</title>
-  <style>
-    :root {
-      --bg: #0f172a;
-      --panel: #0f172a;
+    <header class="topnav">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div class="logo">FLEX AUDIT</div>
+        <div style="display:flex;flex-direction:column">
+          <div class="hero-title">Enterprise Static Auditor</div>
+          <div class="muted">A fully extensible static auditor with CI-friendly reporting</div>
+        </div>
+      </div>
+      <nav class="nav-links">
+        <a href="#overview">Overview</a>
+        <a href="#features">Features</a>
+        <a href="#interactive">Playground</a>
+        <a href="README.md">Readme</a>
+      </nav>
+    </header>
       --accent: #6366f1;
       --muted: #94a3b8;
       --card: rgba(255,255,255,0.03);
@@ -124,6 +249,7 @@
           <p class="muted">We welcome community contributions. See the <a href="CONTRIBUTING.md">Contributing Guide</a>, follow the <a href="CODE_OF_CONDUCT.md">Code of Conduct</a>, and report security issues privately via <a href="SECURITY.md">Security</a>.</p>
         </section>
 
+
       </main>
 
       <aside class="card" aria-label="Docs">
@@ -137,6 +263,7 @@
           <li><a href="#usage">Quick Usage</a></li>
           <li><a href="#reporting">Reporting</a></li>
           <li><a href="#community">Community</a></li>
+          <li><a href="#interactive">Playground</a></li>
         </ul>
 
         <hr style="margin: 0.75rem 0; border-color: rgba(255,255,255,0.03)">
@@ -156,5 +283,6 @@
       <div class="muted">© 2025 ARTIFACT virtual • Built by the community</div>
     </footer>
   </div>
+  <script src="./script.js"></script>
 </body>
 </html>
