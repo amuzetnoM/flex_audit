@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Flex Audit — Enterprise Static Auditor</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #0f172a;
+      --accent: #6366f1;
+      --muted: #94a3b8;
+      --card: rgba(255,255,255,0.03);
+      --glass: rgba(255,255,255,0.04);
+    }
+    html,body{height:100%;}
+    body{
+      background: linear-gradient(135deg,#061026 0%, #0f172a 55%);
+      color: #e6eef8;
+      font-family: Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial;
+      margin:0; padding: 2rem; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    }
+    .container{max-width:1100px; margin: 0 auto;}
+    header{display:flex; gap:1rem; align-items:center; margin-bottom: 1.5rem}
+    .logo{font-family:monospace; color:var(--accent); white-space:pre; font-size:0.8rem;}
+    h1{font-size:2.5rem; margin:0}
+    p.lead{color:var(--muted); margin-top:0.35rem}
+    .grid{display:grid; grid-template-columns: 1fr 280px; gap: 1.25rem; align-items:start}
+    .card{background:var(--card); border-radius:14px; padding:1.25rem; box-shadow: inset 0 0 30px rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.04)}
+    .hero-cta{display:flex; gap:0.5rem; margin-top:1rem}
+    a.btn{display:inline-block; padding:0.6rem 0.9rem; border-radius:8px; text-decoration:none; color:white; background:var(--accent); font-weight:600}
+    .toc{list-style:none; padding:0; margin:0}
+    .toc li{margin-bottom:0.5rem}
+    .doc-section{margin-bottom:1rem}
+    .badges{display:flex; gap:0.5rem}
+    footer{margin-top:2rem; color:var(--muted); text-align:center}
+    .feature-grid{display:grid; grid-template-columns: repeat(2,1fr); gap: 1rem}
+    .feature{display:flex; gap:0.75rem}
+    .muted{color:var(--muted)}
+    code{background:rgba(255,255,255,0.03); padding: 0.1rem 0.25rem; border-radius:6px}
+    @media(max-width:880px){.grid{grid-template-columns: 1fr}}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">FLEX AUDIT</div>
+      <div>
+        <h1>Flex Audit — Enterprise Static Auditor</h1>
+        <p class="lead">Multi-language, extensible static analyzer with scriptable rules, insightful reports and SARIF integration for enterprise CI/CD.</p>
+        <div class="hero-cta"><a class="btn" href="../README.md">Get Started</a> <a class="btn" href="#features" style="background:#475569">Documentation</a></div>
+      </div>
+    </header>
+
+    <div class="grid">
+      <main class="card" role="main">
+        <section class="doc-section" id="overview">
+          <h2>Overview</h2>
+          <p class="muted">Flex Audit is a comprehensive, extensible auditing framework for code and configuration. It combines regex scanning, AST analysis for Python, vulnerability heuristics, and policy-driven reporting. This documentation summarizes what Flex Audit can do and how to operate it in CI or local environments.</p>
+        </section>
+
+        <section class="doc-section" id="features">
+          <h2>Key Features</h2>
+          <div class="feature-grid">
+            <div class="feature"><div style="width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#6366f1,#8b5cf6)"></div><div><strong>Secret Detection</strong><p class="muted">Detects API keys, passwords, credentials, and private keys across many languages.</p></div></div>
+            <div class="feature"><div style="width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#10b981,#34d399)"></div><div><strong>Static Vulnerabilities</strong><p class="muted">SQLi, XSS, command injection, unsafe deserialization patterns identified via regex and language-aware checks.</p></div></div>
+            <div class="feature"><div style="width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#f59e0b,#f97316)"></div><div><strong>Code Quality & AST</strong><p class="muted">Python AST-based checks catch mutable defaults, bare exceptions, and questionable patterns.</p></div></div>
+            <div class="feature"><div style="width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#ef4444,#fb7185)"></div><div><strong>CI Integration</strong><p class="muted">Exports SARIF for GitHub Actions and provides helpful CLI flags for CI policy management.</p></div></div>
+          </div>
+        </section>
+
+        <section class="doc-section" id="usage">
+          <h2>Quick Usage</h2>
+          <pre class="muted">python -m flex_audit.src /path/to/repo --format all --skip-third-party</pre>
+          <p class="muted">Use <code>--skip-third-party</code> to ignore virtualenv and vendor folders like <code>venv</code> or <code>site-packages</code>.</p>
+        </section>
+
+        <section class="doc-section" id="reporting">
+          <h2>Report Outputs</h2>
+          <p class="muted">Flex Audit supports Markdown, HTML, JSON, and SARIF outputs. SARIF is the recommended export for machine processing and CI integration.</p>
+        </section>
+
+        <section class="doc-section" id="community">
+          <h2>Community & Contributions</h2>
+          <p class="muted">We welcome community contributions. See the <a href="CONTRIBUTING.md">Contributing Guide</a>, follow the <a href="CODE_OF_CONDUCT.md">Code of Conduct</a>, and report security issues privately via <a href="SECURITY.md">Security</a>.</p>
+        </section>
+
+      </main>
+
+      <aside class="card" aria-label="Docs">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem">
+          <strong>Documentation</strong>
+          <span class="muted">Latest</span>
+        </div>
+        <ul class="toc">
+          <li><a href="#overview">Overview</a></li>
+          <li><a href="#features">Key Features</a></li>
+          <li><a href="#usage">Quick Usage</a></li>
+          <li><a href="#reporting">Reporting</a></li>
+          <li><a href="#community">Community</a></li>
+        </ul>
+
+        <hr style="margin: 0.75rem 0; border-color: rgba(255,255,255,0.03)">
+
+        <div class="muted">Quick Links</div>
+        <ul class="toc">
+          <li><a href="README.md">Readme</a></li>
+          <li><a href="CONTRIBUTING.md">Contributing</a></li>
+          <li><a href="SECURITY.md">Security</a></li>
+          <li><a href="LICENSE">License</a></li>
+        </ul>
+      </aside>
+
+    </div>
+
+    <footer>
+      <div class="muted">© 2025 ARTIFACT virtual • Built by the community</div>
+    </footer>
+  </div>
+</body>
+</html>

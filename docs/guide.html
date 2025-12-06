@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Guides — Flex Audit</title>
+  <link rel="stylesheet" href="./style.css"/>
+</head>
+<body>
+  <div style="max-width:900px;margin:auto;padding:2rem;font-family:Inter,system-ui,Arial;color:#e6eef8;background:transparent;">
+    <h1>Guides & Tutorials</h1>
+    <h2>CI Integration</h2>
+    <p>Example GitHub Action to run Flex Audit and upload SARIF:</p>
+    <pre style="background:#0b1220;padding:1rem;border-radius:8px;color:#9fb2ff;">name: Flex Audit
+on: [push, pull_request]
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install deps
+        run: pip install -r requirements.txt
+      - name: Run Flex Audit
+        run: python -m flex_audit.src . --format sarif --output ./audit_output --skip-third-party
+      - name: Upload SARIF
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: audit_output/audit_report.sarif
+    </pre>
+
+    <h2>How to contribute</h2>
+    <p>Read <a href="CONTRIBUTING.md">CONTRIBUTING.md</a> and submit issues/PRs on GitHub.</p>
+  </div>
+</body>
+</html>
