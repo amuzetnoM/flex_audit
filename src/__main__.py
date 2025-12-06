@@ -153,6 +153,12 @@ Exit Codes:
     )
 
     parser.add_argument(
+        "--progress",
+        action="store_true",
+        help="Show interactive progress bars during scan (requires tqdm)"
+    )
+
+    parser.add_argument(
         "--skip-third-party",
         action="store_true",
         help="Automatically exclude common third-party directories (venv, site-packages, node_modules, build, dist)"
@@ -199,7 +205,7 @@ Exit Codes:
         exclude_patterns.extend(["venv*", "site-packages", "node_modules", "dist", "build"]) 
     
     # Run scan
-    scanner = Scanner(args.repo, exclude_patterns)
+    scanner = Scanner(args.repo, exclude_patterns, show_progress=args.progress)
     result = scanner.scan()
     
     # Generate reports

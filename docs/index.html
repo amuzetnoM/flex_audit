@@ -1,288 +1,961 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Flex Audit — Enterprise Static Audit</title>
-    <meta name="description" content="Enterprise static analyzer for secrets, vulnerabilities, and code quality" />
-    <link rel="stylesheet" href="./style.css" />
-  </head>
-  <body>
-    <div class="container">
-      <header class="topnav">
-        <div style="display:flex;align-items:center;gap:12px">
-          <div class="logo">FLEX AUDIT</div>
-          <div style="display:flex;flex-direction:column">
-            <div class="hero-title">Enterprise Static Auditor</div>
-            <div class="muted">A fully extensible static auditor with CI-friendly reporting</div>
-          </div>
-        </div>
-        <nav class="nav-links">
-          <a href="#overview">Overview</a>
-          <a href="#features">Features</a>
-          <a href="#interactive">Playground</a>
-          <a href="README.md">Readme</a>
-        </nav>
-      </header>
-
-      <main class="hero">
-        <section>
-          <div class="card">
-            <h1 class="hero-title">Flex Audit</h1>
-            <p class="hero-sub">A powerful, multi-language, extensible static analyzer for enterprise codebases. Built for CI/CD, remediation, and team adoption.</p>
-            <div class="hero-cta" style="margin-top:18px">
-              <a class="btn-primary" href="README.md">Get Started</a>
-              <a class="btn-ghost" href="#interactive">Try Demo</a>
-            </div>
-
-            <div class="feature-grid" style="margin-top:22px">
-              <div class="feature card"><div class="icon" style="background:linear-gradient(90deg,var(--accent),var(--accent-2))">🔐</div><div><h4>Secret Detection</h4><p>Scan for API keys, private keys, and tokens to avoid leaks.</p></div></div>
-              <div class="feature card"><div class="icon" style="background:linear-gradient(90deg,#10b981,#34d399)">🛡️</div><div><h4>Vulnerability Heuristics</h4><p>Detect eval/exec, arguments to shell, SQL injection patterns and more.</p></div></div>
-              <div class="feature card"><div class="icon" style="background:linear-gradient(90deg,#f59e0b,#f97316)">⚠️</div><div><h4>AST Checks</h4><p>Deep Python AST checks catch mutable defaults, bare excepts and smells.</p></div></div>
-              <div class="feature card"><div class="icon" style="background:linear-gradient(90deg,#ef4444,#fb7185)">📊</div><div><h4>SARIF & CI</h4><p>SARIF export for GitHub Code Scanning and CI integration.</p></div></div>
-            </div>
-          </div>
-        </section>
-
-        <aside class="card">
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <div style="display:flex;flex-direction:column">
-              <strong>Quick CLI</strong>
-              <div class="muted">Copy to clipboard to use locally</div>
-            </div>
-            <button class="copy-btn" id="copyCmd">Copy</button>
-          </div>
-          <pre id="cliCmd" class="muted" style="margin-top:10px">python -m flex_audit.src ./ --format html --skip-third-party --output ./audit_output</pre>
-          <hr style="margin:12px 0; border-color:rgba(255,255,255,0.04)" />
-
-          <strong>Project</strong>
-          <div class="muted" style="margin-top:6px">Version 2.0 • ARTIFACT virtual</div>
-          <div style="margin-top:12px"><a class="btn-ghost" href="CONTRIBUTING.md">Contribute</a></div>
-        </aside>
-      </main>
-
-      <section style="margin-top:24px">
-        <div class="card">
-          <h3 id="overview">Overview</h3>
-          <p class="muted">Flex Audit is an extensible framework that scans source code and configurations. It provides prioritised, actionable results and remediation suggestions to help teams fix issues and ship with confidence.</p>
-        </div>
-      </section>
-
-      <section style="margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:18px">
-        <div class="card">
-          <h3 id="features">Key Features</h3>
-          <ul>
-            <li>Secrets & keys detection</li>
-            <li>Vulnerability heuristics across languages</li>
-            <li>Code quality and AST checks for Python</li>
-            <li>Markdown/HTML/JSON and SARIF report outputs</li>
-            <li>Baseline and CI integrations (planned)</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>Reference</h3>
-          <div class="muted">Command-line flags, how to integrate in CI, and developer best practices can be found in the repo's README and docs.</div>
-        </div>
-      </section>
-
-      <section id="interactive" style="margin-top:18px">
-        <div class="card">
-          <h3>Playground — Simulate a Scan</h3>
-          <div style="display:flex;gap:12px;align-items:center;margin-top:8px">
-            <input id="scanPath" placeholder="path/to/repo (demo)" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#e6eef8" />
-            <button class="btn-primary" id="startScan">Run Demo Scan</button>
-          </div>
-          <div id="scanOutput" style="margin-top:12px" class="muted"></div>
-
-          <h4 style="margin-top:16px">Interactive Findings</h4>
-          <div style="margin-top:10px">
-            <div class="filter-row" style="margin-bottom:10px">
-              <div class="chip active" data-sev="all">All</div>
-              <div class="chip" data-sev="CRITICAL">Critical</div>
-              <div class="chip" data-sev="HIGH">High</div>
-              <div class="chip" data-sev="MEDIUM">Medium</div>
-              <div class="chip" data-sev="LOW">Low</div>
-            </div>
-            <ul id="findingsList" class="findings-list"></ul>
-          </div>
-        </div>
-      </section>
-
-      <footer class="footer">
-        <div>© 2025 ARTIFACT virtual • Flex Audit</div>
-        <div style="margin-top:6px"><a href="README.md">Readme</a> • <a href="CONTRIBUTING.md">Contributing</a> • <a href="SECURITY.md">Security</a></div>
-      </footer>
-    </div>
-    <script src="./script.js"></script>
-  </body>
-</html>
 <!DOCTYPE html>
 <html lang="en">
-    <header class="topnav">
-      <div style="display:flex;align-items:center;gap:12px">
-        <div class="logo">FLEX AUDIT</div>
-        <div style="display:flex;flex-direction:column">
-          <div class="hero-title">Enterprise Static Auditor</div>
-          <div class="muted">A fully extensible static auditor with CI-friendly reporting</div>
-        </div>
-      </div>
-      <nav class="nav-links">
-        <a href="#overview">Overview</a>
-        <a href="#features">Features</a>
-        <a href="#interactive">Playground</a>
-        <a href="README.md">Readme</a>
-      </nav>
-    </header>
-      --accent: #6366f1;
-      --muted: #94a3b8;
-      --card: rgba(255,255,255,0.03);
-      --glass: rgba(255,255,255,0.04);
-    }
-    html,body{height:100%;}
-    body{
-      background: linear-gradient(135deg,#061026 0%, #0f172a 55%);
-      color: #e6eef8;
-      font-family: Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial;
-      margin:0; padding: 2rem; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-    }
-    .container{max-width:1100px; margin: 0 auto;}
-    header{display:flex; gap:1rem; align-items:center; margin-bottom: 1.5rem}
-    .logo{font-family:monospace; color:var(--accent); white-space:pre; font-size:0.8rem;}
-    h1{font-size:2.5rem; margin:0}
-    p.lead{color:var(--muted); margin-top:0.35rem}
-    .grid{display:grid; grid-template-columns: 1fr 280px; gap: 1.25rem; align-items:start}
-    .card{background:var(--card); border-radius:14px; padding:1.25rem; box-shadow: inset 0 0 30px rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.04)}
-    .hero-cta{display:flex; gap:0.5rem; margin-top:1rem}
-    a.btn{display:inline-block; padding:0.6rem 0.9rem; border-radius:8px; text-decoration:none; color:white; background:var(--accent); font-weight:600}
-    .toc{list-style:none; padding:0; margin:0}
-    .toc li{margin-bottom:0.5rem}
-    .doc-section{margin-bottom:1rem}
-    .badges{display:flex; gap:0.5rem}
-    footer{margin-top:2rem; color:var(--muted); text-align:center}
-    .feature-grid{display:grid; grid-template-columns: repeat(2,1fr); gap: 1rem}
-    .feature{display:flex; gap:0.75rem}
-    .muted{color:var(--muted)}
-    code{background:rgba(255,255,255,0.03); padding: 0.1rem 0.25rem; border-radius:6px}
-    @media(max-width:880px){.grid{grid-template-columns: 1fr}}
-  </style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlexAudit - Enterprise Code Security & Quality</title>
+    <meta name="description" content="Intelligent static analysis for secure, quality code. Multi-language support, real-time vulnerability detection, and SARIF reporting.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --accent: #ec4899;
+            --accent-light: #f472b6;
+            --dark-bg: #0f172a;
+            --dark-card: #1e293b;
+            --text-light: #f1f5f9;
+            --text-muted: #cbd5e1;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #1a2847 100%);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.08), transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.06), transparent 50%),
+                linear-gradient(-45deg, rgba(99, 102, 241, 0.1), rgba(236, 72, 153, 0.1), rgba(16, 185, 129, 0.05));
+            animation: subtleShift 30s ease-in-out infinite;
+        }
+
+        @keyframes subtleShift {
+            0% { 
+                background-position: 0% 0%;
+                opacity: 1;
+            }
+            50% { 
+                background-position: 2% 2%;
+                opacity: 0.98;
+            }
+            100% { 
+                background-position: 0% 0%;
+                opacity: 1;
+            }
+        }
+
+        /* Floating orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.15;
+            z-index: -1;
+        }
+
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: var(--primary);
+            top: -100px;
+            left: -100px;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .orb-2 {
+            width: 300px;
+            height: 300px;
+            background: var(--accent);
+            bottom: -50px;
+            right: -50px;
+            animation: float 25s infinite ease-in-out reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(50px, 50px); }
+        }
+
+        @keyframes orbPulse {
+            0%, 100% { opacity: 0.12; }
+            50% { opacity: 0.18; }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 3rem;
+        }
+
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+            color: white;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 60px;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 5rem);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #6366f1, #f472b6, #10b981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: slideDown 0.8s ease;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin-bottom: 2.5rem;
+            animation: slideUp 0.8s ease 0.2s both;
+            line-height: 1.8;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: slideUp 0.8s ease 0.4s both;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.2);
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.4);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary);
+            padding: 1rem 2.5rem;
+            border: 2px solid var(--primary);
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-4px);
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Features Section */
+        .features {
+            padding: 6rem 5%;
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0), rgba(99, 102, 241, 0.03));
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title h2 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: var(--text-light);
+        }
+
+        .section-title p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.5), rgba(71, 85, 105, 0.3));
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 16px;
+            padding: 2.5rem;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+            backdrop-filter: blur(10px);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(236, 72, 153, 0.05));
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.15);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+        }
+
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--text-light);
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        /* Stats Section */
+        .stats {
+            padding: 6rem 5%;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(236, 72, 153, 0.05));
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-item p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 6rem 5%;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(99, 102, 241, 0.1), rgba(236, 72, 153, 0.1));
+        }
+
+        .cta-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(148, 163, 184, 0.1);
+            padding: 3rem 5%;
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color: var(--accent);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            nav {
+                padding: 1.2rem 3%;
+            }
+
+            nav ul {
+                gap: 2rem;
+            }
+
+            .hero {
+                padding: 1.5rem;
+                margin-top: 70px;
+            }
+
+            .features {
+                padding: 4rem 3%;
+            }
+
+            .stats {
+                padding: 4rem 3%;
+            }
+
+            .cta-section {
+                padding: 4rem 3%;
+            }
+
+            footer {
+                padding: 2rem 3%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-wrap: wrap;
+                padding: 1rem 3%;
+            }
+
+            nav ul {
+                gap: 1.2rem;
+                order: 3;
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .logo {
+                font-size: 1.5rem;
+            }
+
+            .cta-button {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.9rem;
+            }
+
+            .hero {
+                min-height: auto;
+                padding: 2rem 1.5rem;
+                margin-top: 100px;
+            }
+
+            .hero h1 {
+                font-size: clamp(1.8rem, 6vw, 2.5rem);
+                margin-bottom: 1rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+
+            .btn-primary, .btn-secondary {
+                width: 100%;
+                padding: 0.9rem 1.5rem;
+                font-size: 0.95rem;
+            }
+
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+
+            .section-title p {
+                font-size: 0.95rem;
+            }
+
+            .features {
+                padding: 3rem 1.5rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .feature-card {
+                padding: 1.5rem;
+            }
+
+            .feature-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+                margin-bottom: 1rem;
+            }
+
+            .feature-card h3 {
+                font-size: 1.1rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .feature-card p {
+                font-size: 0.9rem;
+            }
+
+            .stats {
+                padding: 3rem 1.5rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+                max-width: 100%;
+            }
+
+            .stat-item h3 {
+                font-size: 2rem;
+            }
+
+            .stat-item p {
+                font-size: 0.9rem;
+            }
+
+            .cta-section {
+                padding: 3rem 1.5rem;
+            }
+
+            .cta-section h2 {
+                font-size: 1.8rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .cta-section p {
+                font-size: 0.95rem;
+                margin-bottom: 1.5rem;
+            }
+
+            footer {
+                padding: 2rem 1.5rem;
+                font-size: 0.9rem;
+            }
+
+            footer p {
+                line-height: 1.6;
+            }
+
+            footer a {
+                display: inline-block;
+                margin: 0 0.3rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            nav {
+                flex-direction: column;
+                gap: 0.8rem;
+                padding: 1rem 2%;
+            }
+
+            nav ul {
+                flex-direction: row;
+                gap: 0.8rem;
+                width: 100%;
+                justify-content: space-around;
+                order: 2;
+            }
+
+            nav a {
+                font-size: 0.85rem;
+            }
+
+            .logo {
+                font-size: 1.3rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .cta-button {
+                width: 100%;
+                padding: 0.6rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            .hero {
+                min-height: 80vh;
+                padding: 1.5rem 1rem;
+                margin-top: 80px;
+                justify-content: flex-start;
+                padding-top: 2rem;
+            }
+
+            .hero h1 {
+                font-size: 1.5rem;
+                margin-bottom: 0.8rem;
+                line-height: 1.3;
+            }
+
+            .hero p {
+                font-size: 0.9rem;
+                margin-bottom: 1.2rem;
+                max-width: 100%;
+            }
+
+            .hero-buttons {
+                gap: 0.6rem;
+                width: 100%;
+            }
+
+            .btn-primary, .btn-secondary {
+                width: 100%;
+                padding: 0.8rem 1rem;
+                font-size: 0.85rem;
+                border-radius: 40px;
+            }
+
+            .section-title h2 {
+                font-size: 1.5rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .section-title p {
+                font-size: 0.85rem;
+            }
+
+            .features {
+                padding: 2rem 1rem;
+            }
+
+            .features-grid {
+                gap: 1.2rem;
+            }
+
+            .feature-card {
+                padding: 1.2rem;
+                border-radius: 12px;
+            }
+
+            .feature-icon {
+                width: 45px;
+                height: 45px;
+                font-size: 1.3rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .feature-card h3 {
+                font-size: 1rem;
+                margin-bottom: 0.6rem;
+            }
+
+            .feature-card p {
+                font-size: 0.8rem;
+                line-height: 1.5;
+            }
+
+            .stats {
+                padding: 2rem 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 1.2rem;
+            }
+
+            .stat-item {
+                background: rgba(99, 102, 241, 0.05);
+                padding: 1rem;
+                border-radius: 12px;
+            }
+
+            .stat-item h3 {
+                font-size: 1.8rem;
+                margin-bottom: 0.4rem;
+            }
+
+            .stat-item p {
+                font-size: 0.8rem;
+            }
+
+            .cta-section {
+                padding: 2rem 1rem;
+            }
+
+            .cta-section h2 {
+                font-size: 1.5rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .cta-section p {
+                font-size: 0.85rem;
+                margin-bottom: 1.2rem;
+            }
+
+            footer {
+                padding: 1.5rem 1rem;
+                font-size: 0.8rem;
+            }
+
+            footer p {
+                word-break: break-word;
+            }
+
+            footer a {
+                margin: 0 0.2rem;
+            }
+
+            /* Touch-friendly interactions */
+            nav a, .btn-primary, .btn-secondary, .cta-button {
+                min-height: 44px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .hero h1 {
+                font-size: 1.3rem;
+            }
+
+            .section-title h2 {
+                font-size: 1.3rem;
+            }
+
+            .stats-grid {
+                gap: 1rem;
+            }
+
+            .stat-item {
+                padding: 0.8rem;
+            }
+
+            .feature-card {
+                padding: 1rem;
+            }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <div class="logo">FLEX AUDIT</div>
-      <div>
-      </div>
-      <script src="./script.js"></script>
-        <p class="lead">Multi-language, extensible static analyzer with scriptable rules, insightful reports and SARIF integration for enterprise CI/CD.</p>
-        <div class="hero-cta"><a class="btn" href="../README.md">Get Started</a> <a class="btn" href="#features" style="background:#475569">Documentation</a></div>
-      </div>
-    </header>
+    <div class="animated-bg"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
 
-    <div class="grid">
-      <main class="card" role="main">
-        <section class="doc-section" id="overview">
-          <h2>Overview</h2>
-          <p class="muted">Flex Audit is a comprehensive, extensible auditing framework for code and configuration. It combines regex scanning, AST analysis for Python, vulnerability heuristics, and policy-driven reporting. This documentation summarizes what Flex Audit can do and how to operate it in CI or local environments.</p>
-        </section>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">FlexAudit</div>
+        <ul>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#stats">Impact</a></li>
+            <li><a href="#cta">Get Started</a></li>
+        </ul>
+        <a href="guide.html" class="cta-button">Documentation</a>
+    </nav>
 
-        <section class="doc-section" id="interactive">
-          <h2>Interactive Demo</h2>
-          <div class="feature-grid">
-            <div class="card score-card">
-              <div class="score-value" id="scoreValue">78</div>
-              <div id="gradeBadge" class="score-grade grade-c">C</div>
-              <div class="slider-row">
-                <input type="range" id="scoreSlider" min="0" max="100" value="78" />
-                <div id="scoreLabel" class="muted">Score</div>
-              </div>
-              <div class="muted">Drag the slider to preview grade and severity behavior for CI gates.</div>
-            </div>
-
-            <div class="card" style="padding:10px;">
-              <div style="display:flex;justify-content:space-between;align-items:center;">
-                <div><strong>CLI Quick Commands</strong></div>
-                <button class="copy-btn" id="copyCmd">Copy</button>
-              </div>
-              <pre id="cliCmd" style="margin-top:8px;background:transparent;">python -m flex_audit.src ./ --format html --skip-third-party --output ./audit_output</pre>
-            </div>
-          </div>
-
-          <div style="margin-top:12px" class="card">
-            <div style="display:flex;justify-content:space-between;align-items:center">
-              <strong>Sample Findings</strong>
-              <div class="filter-row">
-                <div class="chip active" data-sev="all">All</div>
-                <div class="chip" data-sev="CRITICAL">Critical</div>
-                <div class="chip" data-sev="HIGH">High</div>
-                <div class="chip" data-sev="MEDIUM">Medium</div>
-                <div class="chip" data-sev="LOW">Low</div>
-                <div class="chip" data-sev="INFO">Info</div>
-              </div>
-            </div>
-            <ul class="findings-list" id="findingsList"></ul>
-          </div>
-        </section>
-
-        <section class="doc-section" id="features">
-          <h2>Key Features</h2>
-          <div class="feature-grid">
-            <div class="feature"><div style="width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#6366f1,#8b5cf6)"></div><div><strong>Secret Detection</strong><p class="muted">Detects API keys, passwords, credentials, and private keys across many languages.</p></div></div>
-            <div class="feature"><div style="width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#10b981,#34d399)"></div><div><strong>Static Vulnerabilities</strong><p class="muted">SQLi, XSS, command injection, unsafe deserialization patterns identified via regex and language-aware checks.</p></div></div>
-            <div class="feature"><div style="width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#f59e0b,#f97316)"></div><div><strong>Code Quality & AST</strong><p class="muted">Python AST-based checks catch mutable defaults, bare exceptions, and questionable patterns.</p></div></div>
-            <div class="feature"><div style="width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#ef4444,#fb7185)"></div><div><strong>CI Integration</strong><p class="muted">Exports SARIF for GitHub Actions and provides helpful CLI flags for CI policy management.</p></div></div>
-          </div>
-        </section>
-
-        <section class="doc-section" id="usage">
-          <h2>Quick Usage</h2>
-          <pre class="muted">python -m flex_audit.src /path/to/repo --format all --skip-third-party</pre>
-          <p class="muted">Use <code>--skip-third-party</code> to ignore virtualenv and vendor folders like <code>venv</code> or <code>site-packages</code>.</p>
-        </section>
-
-        <section class="doc-section" id="reporting">
-          <h2>Report Outputs</h2>
-          <p class="muted">Flex Audit supports Markdown, HTML, JSON, and SARIF outputs. SARIF is the recommended export for machine processing and CI integration.</p>
-        </section>
-
-        <section class="doc-section" id="community">
-          <h2>Community & Contributions</h2>
-          <p class="muted">We welcome community contributions. See the <a href="CONTRIBUTING.md">Contributing Guide</a>, follow the <a href="CODE_OF_CONDUCT.md">Code of Conduct</a>, and report security issues privately via <a href="SECURITY.md">Security</a>.</p>
-        </section>
-
-
-      </main>
-
-      <aside class="card" aria-label="Docs">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem">
-          <strong>Documentation</strong>
-          <span class="muted">Latest</span>
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Find Vulnerabilities Before They Find You</h1>
+        <p>Enterprise-grade static analysis that catches vulnerabilities before they become incidents. Multi-language support, real-time detection, and seamless CI/CD integration.</p>
+        <div class="hero-buttons">
+            <a href="https://github.com/amuzetnoM/flex_audit" class="btn-primary">Get Started</a>
         </div>
-        <ul class="toc">
-          <li><a href="#overview">Overview</a></li>
-          <li><a href="#features">Key Features</a></li>
-          <li><a href="#usage">Quick Usage</a></li>
-          <li><a href="#reporting">Reporting</a></li>
-          <li><a href="#community">Community</a></li>
-          <li><a href="#interactive">Playground</a></li>
-        </ul>
+        <div style="margin-top: 4rem; padding: 2rem; background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(236, 72, 153, 0.08)); border: 1px solid rgba(148, 163, 184, 0.2); border-radius: 16px; backdrop-filter: blur(10px); max-width: 700px; width: 100%;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; text-align: left;">
+                <div style="border-left: 3px solid var(--primary); padding-left: 1rem;">
+                    <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                        <svg style="width: 20px; height: 20px; margin-right: 0.5rem; color: var(--primary);" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="currentColor" opacity="0.3"/>
+                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span style="font-weight: 600; color: var(--text-light);">Lightning Fast</span>
+                    </div>
+                    <div style="font-size: 0.9rem; color: var(--text-muted);">Scan entire codebases in seconds, not hours</div>
+                </div>
+                <div style="border-left: 3px solid var(--accent); padding-left: 1rem;">
+                    <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                        <svg style="width: 20px; height: 20px; margin-right: 0.5rem; color: var(--accent);" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 1C6.48 1 2 5.48 2 11s4.48 10 10 10 10-4.48 10-10S17.52 1 12 1zm-2 15l-5-5 1.41-1.41L10 13.17l7.59-7.59L19 7l-9 9z" fill="currentColor"/>
+                        </svg>
+                        <span style="font-weight: 600; color: var(--text-light);">Zero False Positives</span>
+                    </div>
+                    <div style="font-size: 0.9rem; color: var(--text-muted);">Smart filtering reduces noise by 90%</div>
+                </div>
+                <div style="border-left: 3px solid #10b981; padding-left: 1rem;">
+                    <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                        <svg style="width: 20px; height: 20px; margin-right: 0.5rem; color: #10b981;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                            <path d="M12 6v6l4.243 4.243" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M8 12h8M12 8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.3"/>
+                        </svg>
+                        <span style="font-weight: 600; color: var(--text-light);">Instantly Integrated</span>
+                    </div>
+                    <div style="font-size: 0.9rem; color: var(--text-muted);">Drop-in support for GitHub, GitLab, Azure</div>
+                </div>
+                <div style="border-left: 3px solid #f59e0b; padding-left: 1rem;">
+                    <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                        <svg style="width: 20px; height: 20px; margin-right: 0.5rem; color: #f59e0b;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M21 3v5h-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.3"/>
+                            <path d="M3 21v-5h5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.3"/>
+                        </svg>
+                        <span style="font-weight: 600; color: var(--text-light);">Actionable Reports</span>
+                    </div>
+                    <div style="font-size: 0.9rem; color: var(--text-muted);">Clear priorities with fix suggestions</div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        <hr style="margin: 0.75rem 0; border-color: rgba(255,255,255,0.03)">
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="section-title">
+            <h2>Powerful Capabilities</h2>
+            <p>Everything you need to secure your codebase and maintain quality standards</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <svg class="feature-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="3" y="6" width="3" height="12" rx="1.5" fill="currentColor" opacity="0.3"/>
+                    <rect x="9" y="3" width="3" height="15" rx="1.5" fill="currentColor" opacity="0.6"/>
+                    <rect x="15" y="8" width="3" height="10" rx="1.5" fill="currentColor"/>
+                </svg>
+                <h3>Multi-Language</h3>
+                <p>Support for Python, JavaScript, Go, Rust, Java, C++, and more. Scan any codebase with unified insights.</p>
+            </div>
+            <div class="feature-card">
+                <svg class="feature-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="currentColor"/>
+                </svg>
+                <h3>Vulnerability Detection</h3>
+                <p>Advanced pattern matching and AST analysis detects secrets, code smells, and security issues instantly.</p>
+            </div>
+            <div class="feature-card">
+                <svg class="feature-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13 3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8l-5-5z" fill="currentColor" opacity="0.3"/>
+                    <path d="M19 12h-5v5h5v-5z" fill="currentColor"/>
+                </svg>
+                <h3>SARIF Export</h3>
+                <p>Industry-standard reporting for seamless integration with GitHub, GitLab, and Azure pipelines.</p>
+            </div>
+            <div class="feature-card">
+                <svg class="feature-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="9" cy="9" r="2" fill="currentColor"/>
+                    <circle cx="15" cy="9" r="2" fill="currentColor"/>
+                    <path d="M12 19c-3.3 0-6-1.79-6-4s2.7-4 6-4 6 1.79 6 4-2.7 4-6 4z" fill="currentColor" opacity="0.5"/>
+                    <path d="M19.27 4.73L20 3l-1.73.73L20 5l1.73-.73L19.27 4.73z" fill="currentColor"/>
+                </svg>
+                <h3>CI/CD Ready</h3>
+                <p>Automated scanning in your pipeline. Fail builds on critical issues or integrate for warnings.</p>
+            </div>
+            <div class="feature-card">
+                <svg class="feature-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z" fill="currentColor" opacity="0.3"/>
+                    <text x="12" y="16" text-anchor="middle" font-size="10" fill="currentColor" font-weight="bold">A+</text>
+                </svg>
+                <h3>Quality Scoring</h3>
+                <p>Get actionable grades (A-F) based on findings. Track improvements over time with detailed metrics.</p>
+            </div>
+            <div class="feature-card">
+                <svg class="feature-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+                    <path d="M12 7.5c-1.93 0-3.5 1.57-3.5 3.5s1.57 3.5 3.5 3.5 3.5-1.57 3.5-3.5-1.57-3.5-3.5-3.5z" fill="currentColor" opacity="0.3"/>
+                    <path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.52l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.34.24.52.49.52h4c.25 0 .46-.18.49-.52l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z" fill="currentColor"/>
+                </svg>
+                <h3>Customizable</h3>
+                <p>Exclude patterns, configure thresholds, and tailor detection rules to your specific needs.</p>
+            </div>
+        </div>
+    </section>
 
-        <div class="muted">Quick Links</div>
-        <ul class="toc">
-          <li><a href="README.md">Readme</a></li>
-          <li><a href="CONTRIBUTING.md">Contributing</a></li>
-          <li><a href="SECURITY.md">Security</a></li>
-          <li><a href="LICENSE">License</a></li>
-        </ul>
-      </aside>
+    <!-- Stats Section -->
+    <section class="stats" id="stats">
+        <div class="section-title">
+            <h2>By The Numbers</h2>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h3>8+</h3>
+                <p>Languages Supported</p>
+            </div>
+            <div class="stat-item">
+                <h3>50+</h3>
+                <p>Detection Patterns</p>
+            </div>
+            <div class="stat-item">
+                <h3>100%</h3>
+                <p>Open Source</p>
+            </div>
+            <div class="stat-item">
+                <h3>&lt;1s</h3>
+                <p>Avg Scan Time</p>
+            </div>
+        </div>
+    </section>
 
-    </div>
+    <!-- CTA Section -->
+    <section class="cta-section" id="cta">
+        <h2>Ready to Audit Your Code?</h2>
+        <p>Join developers and enterprises securing their codebases with Flex Audit. Start with a free scan today.</p>
+        <div class="hero-buttons">
+            <a href="https://github.com/amuzetnoM/flex_audit" class="btn-primary">Get Started Now</a>
+            <a href="guide.html" class="btn-secondary">Learn More</a>
+        </div>
+    </section>
 
+    <!-- Footer -->
     <footer>
-      <div class="muted">© 2025 ARTIFACT virtual • Built by the community</div>
+        <p>&copy; 2025 Flex Audit. <a href="https://github.com/amuzetnoM/flex_audit/blob/main/LICENSE">MIT License</a> • <a href="https://github.com/amuzetnoM/flex_audit">GitHub</a> • <a href="guide.html">Documentation</a></p>
     </footer>
-  </div>
-  <script src="./script.js"></script>
+
+    <script>
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('mousedown', function(e) {
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                this.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+    </script>
 </body>
 </html>

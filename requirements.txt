@@ -8,6 +8,7 @@ jinja2>=3.1.0          # Template engine for reports
 colorama>=0.4.6        # Cross-platform colored terminal output
 rich>=13.0.0           # Rich text and beautiful formatting
 pygments>=2.16.0       # Syntax highlighting for code snippets
+tqdm>=4.65.0           # Progress bars for CLI
 
 # Optional dependencies for enhanced features
 # chardet>=5.0.0       # Character encoding detection

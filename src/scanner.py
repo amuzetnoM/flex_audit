@@ -23,11 +23,16 @@ Handles all file scanning, pattern matching, and issue detection.
 """
 
 import os
+import fnmatch
 import ast
 import hashlib
 from pathlib import Path
 from dataclasses import dataclass, field
 from typing import List, Dict, Any, Optional, Set, Tuple
+try:
+    from tqdm import tqdm
+except Exception:
+    tqdm = None
 from collections import defaultdict
 from datetime import datetime
 
@@ -156,9 +161,10 @@ class Scanner:
     and configuration misconfigurations.
     """
     
-    def __init__(self, repo_path: str, exclude_patterns: List[str] = None):
+    def __init__(self, repo_path: str, exclude_patterns: List[str] = None, show_progress: bool = False):
         self.repo_path = os.path.abspath(repo_path)
         self.exclude_patterns = exclude_patterns or []
+        self.show_progress = show_progress and (tqdm is not None)
         self.result = AuditResult(
             repo_path=self.repo_path,
             timestamp=datetime.utcnow().isoformat()
@@ -174,11 +180,37 @@ class Scanner:
         print(f"\n🔍 Scanning repository: {self.repo_path}")
         print("=" * 60)
         
-        for root, dirs, files in os.walk(self.repo_path):
-            # Filter out ignored directories
-            dirs[:] = [d for d in dirs if d not in IGNORE_DIRS and not d.startswith('.')]
-            
-            for filename in files:
+        # Build a filtered list of files first if progress is requested
+        files_to_scan = []
+        if self.show_progress:
+                for root, dirs, files in os.walk(self.repo_path):
+                dirs[:] = [d for d in dirs if d not in IGNORE_DIRS and not d.startswith('.')]
+                for filename in files:
+                    rel_path = os.path.relpath(os.path.join(root, filename), self.repo_path)
+                    if self._should_exclude(rel_path):
+                        continue
+                    files_to_scan.append((root, filename))
+            file_iter = files_to_scan
+        else:
+            file_iter = []
+            for root, dirs, files in os.walk(self.repo_path):
+                dirs[:] = [d for d in dirs if d not in IGNORE_DIRS and not d.startswith('.')]
+                for filename in files:
+                    rel_path = os.path.relpath(os.path.join(root, filename), self.repo_path)
+                    if self._should_exclude(rel_path):
+                        continue
+                    file_iter.append((root, filename))
+
+        # Setup progress bars if requested
+        if self.show_progress and file_iter:
+            total_files = len(file_iter)
+            files_bar = tqdm(total=total_files, desc="Files", position=0, dynamic_ncols=True, leave=True)
+            lines_bar = tqdm(total=None, desc="Lines", position=1, dynamic_ncols=True, leave=True)
+            findings_bar = tqdm(total=None, desc="Findings", position=2, dynamic_ncols=True, leave=True)
+        else:
+            files_bar = lines_bar = findings_bar = None
+
+        for root, filename in file_iter:
                 file_path = os.path.join(root, filename)
                 rel_path = os.path.relpath(file_path, self.repo_path)
                 
@@ -191,6 +223,20 @@ class Scanner:
                 if analysis:
                     self.result.files_analyzed.append(analysis)
                     self.result.findings.extend(analysis.findings)
+                    # Update progress bars
+                        if files_bar is not None:
+                        files_bar.update(1)
+                        if lines_bar is not None:
+                        lines_bar.update(analysis.lines)
+                        if findings_bar is not None and analysis.findings:
+                        findings_bar.update(len(analysis.findings))
+        # finalize progress bars
+        if files_bar is not None:
+            files_bar.close()
+        if lines_bar is not None:
+            lines_bar.close()
+        if findings_bar is not None:
+            findings_bar.close()
         
         # Compile statistics
         self.result.stats = {
@@ -213,8 +259,12 @@ class Scanner:
     def _should_exclude(self, path: str) -> bool:
         """Check if path should be excluded."""
         for pattern in self.exclude_patterns:
-            if pattern in path:
-                return True
+            try:
+                if fnmatch.fnmatch(path, pattern) or fnmatch.fnmatch(os.path.basename(path), pattern):
+                    return True
+            except Exception:
+                if pattern in path:
+                    return True
         return False
     
     def _analyze_file(self, file_path: str, rel_path: str) -> Optional[FileAnalysis]:
