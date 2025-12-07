@@ -24,7 +24,7 @@ ___  _|__|_______/  |_ __ _______  |  |
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![ARTIFACT virtual](https://img.shields.io/badge/ARTIFACT-virtual-purple.svg)](https://github.com/artifactvirtual)
 
-*A fully self-guiding, extensible, modular static auditor capable of scanning ANY codebase with enterprise-grade branded reporting.*
+*A fully self-guiding, extensible, modular, static auditor capable of scanning ANY codebase and fabricate industry-grade reporting.*
 
 </div>
 
