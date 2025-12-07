@@ -319,7 +319,7 @@ The original `auditor.py` is still available for backwards compatibility:
 python auditor.py /path/to/repo --out audit
 ```
 
-### Future Roadmap
+### Project Roadmap
 - AI-guided code fixer
 - Automated refactorer
 - Automated documentation generator
