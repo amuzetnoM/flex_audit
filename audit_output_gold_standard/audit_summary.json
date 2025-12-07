@@ -1,0 +1,13 @@
+{
+  "generated": "2025-12-07T13:09:07.955267",
+  "repo": "c:\\workspace\\gold_standard",
+  "flags": {
+    "SECRET": 47,
+    "RAW_SQL": 2,
+    "SUBPROCESS": 8,
+    "TODO_FIXME": 6,
+    "EVAL_EXEC": 1
+  },
+  "score": 5,
+  "total_lines": 35391
+}
